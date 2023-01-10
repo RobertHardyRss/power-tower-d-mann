@@ -1,2 +1,3 @@
-# power-tower-d-mann
+# Power Tower D MANN!
+
 A tower defense game ... we think
