@@ -8,13 +8,45 @@ const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
 
-let x = canvas.width / 2;
-let y = canvas.height / 2;
+class RoundThing {
+	constructor(defaultColor) {
+		this.x = canvas.width / 2;
+		this.y = canvas.height / 2;
+		this.xDirection = 1;
+		this.yDirection = 1;
+		this.color = defaultColor;
+		this.radius = 16;
 
-let xDirection = 1;
-let yDirection = 1;
+		this.setRandomDirection();
+	}
+
+	getRandomDirection() {
+		return Math.random() > 0.5 ? 1 : -1;
+	}
+
+	setRandomDirection() {
+		this.xDirection = this.getRandomDirection();
+		this.yDirection = this.getRandomDirection();
+	}
+
+	update() {
+		this.x += this.xDirection;
+		this.y += this.yDirection;
+	}
+
+	draw() {
+		ctx.beginPath();
+		ctx.fillStyle = this.color;
+		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+		ctx.fill();
+	}
+}
+
+let c1 = new RoundThing("green");
+let c2 = new RoundThing("purple");
+let c3 = new RoundThing("red");
+
 let lastDirectionChange = 0;
-
 let currentTime = 0;
 
 function gameLoop(timestamp) {
@@ -27,16 +59,19 @@ function gameLoop(timestamp) {
 
 	if (lastDirectionChange >= 250) {
 		lastDirectionChange = 0;
-		xDirection = Math.random() > 0.5 ? 1 : -1;
-		yDirection = Math.random() > 0.5 ? 1 : -1;
+
+		c1.setRandomDirection();
+		c2.setRandomDirection();
+		c3.setRandomDirection();
 	}
 
-	x = x + xDirection;
-	y = y + yDirection;
+	c1.update();
+	c2.update();
+	c3.update();
 
-	ctx.beginPath();
-	ctx.arc(x, y, 16, 0, Math.PI * 2);
-	ctx.fill();
+	c1.draw();
+	c2.draw();
+	c3.draw();
 
 	window.requestAnimationFrame(gameLoop);
 }
