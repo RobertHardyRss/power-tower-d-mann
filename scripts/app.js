@@ -9,15 +9,17 @@ canvas.width = 800;
 canvas.height = 600;
 
 class RoundThing {
-	constructor(defaultColor) {
+	constructor() {
 		this.x = canvas.width / 2;
 		this.y = canvas.height / 2;
 		this.xDirection = 1;
 		this.yDirection = 1;
-		this.color = defaultColor;
+		this.color = "black";
 		this.radius = 16;
-
+		this.lastDirectionChange = 0;
+		this.changeInterval = Math.random() * 750 + 250;
 		this.setRandomDirection();
+		this.setRandomColor();
 	}
 
 	getRandomDirection() {
@@ -29,7 +31,20 @@ class RoundThing {
 		this.yDirection = this.getRandomDirection();
 	}
 
-	update() {
+	setRandomColor() {
+		let hue = Math.floor(Math.random() * 360);
+		let hsl = `hsl(${hue}, 100%, 50%)`;
+		this.color = hsl;
+	}
+
+	update(elapsedTime) {
+		this.lastDirectionChange += elapsedTime;
+
+		if (this.lastDirectionChange >= this.changeInterval) {
+			this.lastDirectionChange = 0;
+			this.setRandomDirection();
+		}
+
 		this.x += this.xDirection;
 		this.y += this.yDirection;
 	}
@@ -42,9 +57,11 @@ class RoundThing {
 	}
 }
 
-let c1 = new RoundThing("green");
-let c2 = new RoundThing("purple");
-let c3 = new RoundThing("red");
+let roundThings = [];
+
+for (let i = 0; i < 100; i++) {
+	roundThings.push(new RoundThing());
+}
 
 let lastDirectionChange = 0;
 let currentTime = 0;
@@ -57,21 +74,10 @@ function gameLoop(timestamp) {
 	console.log(timestamp, elapsedTime);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	if (lastDirectionChange >= 250) {
-		lastDirectionChange = 0;
-
-		c1.setRandomDirection();
-		c2.setRandomDirection();
-		c3.setRandomDirection();
-	}
-
-	c1.update();
-	c2.update();
-	c3.update();
-
-	c1.draw();
-	c2.draw();
-	c3.draw();
+	roundThings.forEach((r) => {
+		r.update(elapsedTime);
+		r.draw();
+	});
 
 	window.requestAnimationFrame(gameLoop);
 }
