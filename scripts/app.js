@@ -8,6 +8,48 @@ const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
 
+class Turret {
+	constructor() {
+		this.x = canvas.width / 2;
+		this.y = canvas.height / 2;
+		this.color = "black";
+		this.angle = 0;
+
+		/** @type { RoundThing | null } */
+		this.target = null;
+	}
+
+	setTarget(target) {
+		this.target = target;
+	}
+
+	update(elapsedTime) {
+		if (this.target == null) return;
+
+		let dx = this.x - this.target.x;
+		let dy = this.y - this.target.y;
+		this.angle = Math.atan2(dy, dx);
+	}
+
+	draw() {
+		ctx.save();
+
+		ctx.translate(this.x, this.y);
+		ctx.rotate(this.angle);
+
+		ctx.beginPath();
+		ctx.moveTo(-10, 0);
+		ctx.lineTo(10, -5);
+		ctx.lineTo(10, 5);
+		ctx.lineTo(-10, 0);
+
+		ctx.fillStyle = this.color;
+		ctx.fill();
+
+		ctx.restore();
+	}
+}
+
 class RoundThing {
 	constructor() {
 		this.x = canvas.width / 2;
@@ -59,9 +101,12 @@ class RoundThing {
 
 let roundThings = [];
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 1; i++) {
 	roundThings.push(new RoundThing());
 }
+
+let t1 = new Turret();
+t1.setTarget(roundThings[0]);
 
 let lastDirectionChange = 0;
 let currentTime = 0;
@@ -79,13 +124,10 @@ function gameLoop(timestamp) {
 		r.draw();
 	});
 
+	t1.update(elapsedTime);
+	t1.draw();
+
 	window.requestAnimationFrame(gameLoop);
 }
 
 window.requestAnimationFrame(gameLoop);
-
-// gameLoop();
-// x = 50;
-// gameLoop();
-// x = 500;
-// gameLoop();
