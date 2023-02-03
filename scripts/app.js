@@ -44,12 +44,20 @@ class Projectile {
 }
 
 class Turret {
-	constructor(sx, sy) {
+	/**
+	 * @param {number} sx
+	 * @param {number} sy
+	 * @param {RoundThing[]} targets
+	 */
+	constructor(sx, sy, targets) {
 		this.x = sx;
 		this.y = sy;
 		this.color = "black";
 		this.angle = 0;
 
+		this.range = 300;
+
+		this.targets = targets;
 		/** @type { RoundThing | null } */
 		this.target = null;
 
@@ -59,11 +67,38 @@ class Turret {
 		this.lastFireTime = 0;
 	}
 
-	setTarget(target) {
-		this.target = target;
+	acquireTarget() {
+		// if my current target is out of range, set target to null
+		// if I already have a target return
+		if (this.target != null) {
+			if (this.getDistanceToTarget(this.target) > this.range) {
+				this.target = null;
+				return;
+			}
+		}
+
+		// if targets are within my range, target the closest
+		this.targets.forEach((t) => {
+			if (this.getDistanceToTarget(t) <= this.range) {
+				this.target = t;
+			}
+		});
+	}
+
+	getDistanceToTarget(target) {
+		// if we don't have a target make the distance as big
+		// as possible (WAY out of range)
+		if (target == null) return Number.MAX_VALUE;
+
+		let dx = this.x - target.x;
+		let dy = this.y - target.y;
+		let distance = Math.sqrt(dx * dx + dy * dy) - target.radius;
+		return distance;
 	}
 
 	update(elapsedTime) {
+		this.acquireTarget();
+
 		if (this.target == null) return;
 
 		this.lastFireTime += elapsedTime;
@@ -88,6 +123,13 @@ class Turret {
 		this.projectiles.forEach((p) => {
 			p.draw();
 		});
+
+		ctx.save();
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
+		ctx.fillStyle = "hsla(0, 100%, 50%, 0.5)";
+		ctx.fill();
+		ctx.restore();
 
 		ctx.save();
 
@@ -163,18 +205,11 @@ for (let i = 0; i < 1; i++) {
 }
 
 let turrets = [
-	new Turret(100, 100),
-	new Turret(canvas.width - 100, 100),
-	new Turret(100, canvas.height - 100),
-	new Turret(canvas.width - 100, canvas.height - 100),
+	new Turret(100, 100, roundThings),
+	new Turret(canvas.width - 100, 100, roundThings),
+	new Turret(100, canvas.height - 100, roundThings),
+	new Turret(canvas.width - 100, canvas.height - 100, roundThings),
 ];
-
-turrets.forEach((t) => {
-	t.setTarget(roundThings[0]);
-});
-
-// let t1 = new Turret(100, 100);
-// t1.setTarget(roundThings[0]);
 
 let lastDirectionChange = 0;
 let currentTime = 0;
