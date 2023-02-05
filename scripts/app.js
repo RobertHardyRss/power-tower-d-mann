@@ -14,6 +14,9 @@ class Projectile {
 		this.dy = sy - ty;
 		this.tx = tx;
 		this.ty = ty;
+		this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+		this.distanceTraveled = 0;
+		
 
 		this.x = sx;
 		this.y = sy;
@@ -22,11 +25,11 @@ class Projectile {
 	}
 
 	update(elapsedTime) {
-		if (this.x == this.tx && this.y == this.ty) {
+		if (this.distanceTraveled >= this.distance) {
 			this.isVisible = false;
 			return;
 		}
-
+		this.distanceTraveled = this.distanceTraveled + this.speed;
 		this.x -= this.dx / this.speed;
 		this.y -= this.dy / this.speed;
 	}
@@ -73,6 +76,7 @@ class Turret {
 		if (this.target != null) {
 			if (this.getDistanceToTarget(this.target) > this.range) {
 				this.target = null;
+				this.projectiles = [];
 				return;
 			}
 		}
