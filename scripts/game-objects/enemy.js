@@ -1,10 +1,18 @@
 //@ts-check
 
-export class RoundThing {
+export class Enemy {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} x
+	 * @param {number} y
+	 */
 	constructor(ctx, x, y) {
 		this.ctx = ctx;
 		this.x = x;
 		this.y = y;
+
+		this.health = 100;
+
 		this.xDirection = 1;
 		this.yDirection = 1;
 		this.color = "black";

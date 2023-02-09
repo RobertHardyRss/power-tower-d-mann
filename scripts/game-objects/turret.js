@@ -1,16 +1,15 @@
 //@ts-check
 
 import { Projectile } from "./projectile.js";
-import { RoundThing } from "./round-thing.js";
+import { Enemy } from "./enemy.js";
 
 export class Turret {
 	/**
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {number} sx
 	 * @param {number} sy
-	 * @param {RoundThing[]} targets
 	 */
-	constructor(ctx, sx, sy, targets) {
+	constructor(ctx, sx, sy) {
 		this.ctx = ctx;
 		this.x = sx;
 		this.y = sy;
@@ -19,8 +18,9 @@ export class Turret {
 
 		this.range = 300;
 
-		this.targets = targets;
-		/** @type { RoundThing | null } */
+		/** @type {Enemy[]} */
+		this.targets = [];
+		/** @type { Enemy | null } */
 		this.target = null;
 
 		/** @type { Projectile[] } */

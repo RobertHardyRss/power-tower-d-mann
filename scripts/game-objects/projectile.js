@@ -1,11 +1,20 @@
 //@ts-check
 
 export class Projectile {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} sx
+	 * @param {number} sy
+	 * @param {number} tx
+	 * @param {number} ty
+	 */
 	constructor(ctx, sx, sy, tx, ty) {
 		this.ctx = ctx;
 		const dx = sx - tx;
 		const dy = sy - ty;
 		this.distance = Math.hypot(dx, dy);
+
+		this.damage = 10;
 
 		this.distanceTraveled = 0;
 

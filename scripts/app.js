@@ -1,5 +1,6 @@
 //@ts-check
-import { RoundThing } from "./game-objects/round-thing.js";
+import { Enemy } from "./game-objects/enemy.js";
+import { Projectile } from "./game-objects/projectile.js";
 import { Turret } from "./game-objects/turret.js";
 
 /** @type {HTMLCanvasElement} */
@@ -19,27 +20,49 @@ class Game {
 		};
 		this.gridSize = 32;
 		this.currentLevel = undefined;
+
+		/** @type { Turret[] } */
+		this.turrets = [];
+		/** @type { Enemy[] } */
+		this.enemies = [];
+		/** @type { Projectile[] } */
+		this.projectiles = [];
+	}
+
+	initTurrets() {
+		this.turrets.forEach((t) => {
+			t.targets = this.enemies;
+		});
+	}
+
+	update() {
+		this.projectiles = [];
+		this.turrets.forEach((t) => {
+			t.targets = this.enemies;
+			this.projectiles.concat(t.projectiles);
+		});
+
 	}
 }
 
 class GameLevel {
 	constructor() {}
 }
-// let g = new Game();
-// g.player.health;
 
-let roundThings = [];
+let game = new Game();
+
+game.turrets = [
+	new Turret(ctx, 100, 100),
+	new Turret(ctx, canvas.width - 100, 100),
+	new Turret(ctx, 100, canvas.height - 100),
+	new Turret(ctx, canvas.width - 100, canvas.height - 100),
+];
 
 for (let i = 0; i < 1; i++) {
-	roundThings.push(new RoundThing(ctx, canvas.width / 2, canvas.height / 2));
+	game.enemies.push(new Enemy(ctx, canvas.width / 2, canvas.height / 2));
 }
 
-let turrets = [
-	new Turret(ctx, 100, 100, roundThings),
-	new Turret(ctx, canvas.width - 100, 100, roundThings),
-	new Turret(ctx, 100, canvas.height - 100, roundThings),
-	new Turret(ctx, canvas.width - 100, canvas.height - 100, roundThings),
-];
+game.initTurrets();
 
 let lastDirectionChange = 0;
 let currentTime = 0;
@@ -52,12 +75,12 @@ function gameLoop(timestamp) {
 	console.log(timestamp, elapsedTime);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	roundThings.forEach((r) => {
+	game.enemies.forEach((r) => {
 		r.update(elapsedTime);
 		r.draw();
 	});
 
-	turrets.forEach((r) => {
+	game.turrets.forEach((r) => {
 		r.update(elapsedTime);
 		r.draw();
 	});
