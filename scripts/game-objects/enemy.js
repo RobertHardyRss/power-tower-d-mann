@@ -10,8 +10,10 @@ export class Enemy {
 		this.ctx = ctx;
 		this.x = x;
 		this.y = y;
+
 		this.health = 100;
 		this.isAlive = true;
+
 		this.xDirection = 1;
 		this.yDirection = 1;
 		this.color = "black";
@@ -57,6 +59,7 @@ export class Enemy {
 
 	draw() {
 		if (!this.isAlive) return;
+
 		this.ctx.beginPath();
 		this.ctx.fillStyle = this.color;
 		this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);

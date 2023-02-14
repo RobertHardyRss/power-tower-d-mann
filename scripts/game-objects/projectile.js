@@ -1,4 +1,5 @@
 //@ts-check
+
 export class Projectile {
 	/**
 	 * @param {CanvasRenderingContext2D} ctx
@@ -12,10 +13,10 @@ export class Projectile {
 		const dx = sx - tx;
 		const dy = sy - ty;
 		this.distance = Math.hypot(dx, dy);
-		//this.distance = Math.sqrt(this.dx,this.dy, and so forth)
-		this.distanceTraveled = 0;
-		//this is the damage our turrets are doing
+
 		this.damage = 10;
+
+		this.distanceTraveled = 0;
 
 		const angle = Math.atan2(dy, dx);
 		this.xOffset = Math.cos(angle);

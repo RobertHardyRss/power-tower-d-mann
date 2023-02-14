@@ -1,7 +1,8 @@
+//@ts-check
+
 import { Projectile } from "./projectile.js";
 import { Enemy } from "./enemy.js";
 
-//@ts-check
 export class Turret {
 	/**
 	 * @param {CanvasRenderingContext2D} ctx
@@ -58,7 +59,6 @@ export class Turret {
 		let dx = this.x - target.x;
 		let dy = this.y - target.y;
 		let distance = Math.hypot(dx, dy);
-		// let distance = Math.sqrt(dx * dx + dy * dy) - target.radius;
 		return distance;
 	}
 
@@ -69,7 +69,7 @@ export class Turret {
 			p.update();
 		});
 
-		// filter out projectiles that are no longer visable
+		// filter out projectiles that are no longer visible
 		this.projectiles = this.projectiles.filter((p) => p.isVisible);
 
 		if (this.target == null) return;
@@ -107,7 +107,6 @@ export class Turret {
 		this.ctx.restore();
 
 		this.ctx.save();
-
 		this.ctx.translate(this.x, this.y);
 		this.ctx.rotate(this.angle);
 
@@ -130,8 +129,9 @@ export class PointDefenseTurret extends Turret {
 	 * @param {number} sx
 	 * @param {number} sy
 	 */
-	constuctor(ctx, sx, sy) {
+	constructor(ctx, sx, sy) {
 		super(ctx, sx, sy);
+
 		this.color = "red";
 	}
 }
