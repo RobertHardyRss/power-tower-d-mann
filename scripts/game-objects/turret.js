@@ -33,7 +33,10 @@ export class Turret {
 		// if my current target is out of range, set target to null
 		// if I already have a target return
 		if (this.target != null) {
-			if (this.getDistanceToTarget(this.target) > this.range) {
+			if (
+				!this.target.isAlive ||
+				this.getDistanceToTarget(this.target) > this.range
+			) {
 				this.target = null;
 				// this.projectiles = [];
 				return;
@@ -117,5 +120,18 @@ export class Turret {
 		this.ctx.fill();
 
 		this.ctx.restore();
+	}
+}
+
+export class PointDefenseTurret extends Turret {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} sx
+	 * @param {number} sy
+	 */
+	constructor(ctx, sx, sy) {
+		super(ctx, sx, sy);
+
+		this.color = "red";
 	}
 }
