@@ -1,5 +1,3 @@
-
-
 //@ts-check
 
 export class Enemy {
@@ -14,6 +12,7 @@ export class Enemy {
 		this.y = y;
 
 		this.health = 100;
+		this.isAlive = true;
 
 		this.xDirection = 1;
 		this.yDirection = 1;
@@ -43,6 +42,12 @@ export class Enemy {
 	update(elapsedTime) {
 		this.lastDirectionChange += elapsedTime;
 
+		if (this.isAlive && this.health <= 0) {
+			this.isAlive = false;
+		}
+
+		if (!this.isAlive) return;
+
 		if (this.lastDirectionChange >= this.changeInterval) {
 			this.lastDirectionChange = 0;
 			this.setRandomDirection();
@@ -53,6 +58,8 @@ export class Enemy {
 	}
 
 	draw() {
+		if (!this.isAlive) return;
+
 		this.ctx.beginPath();
 		this.ctx.fillStyle = this.color;
 		this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);

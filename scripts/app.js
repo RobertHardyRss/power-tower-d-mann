@@ -1,7 +1,7 @@
 //@ts-check
 import { Enemy } from "./game-objects/enemy.js";
 import { Projectile } from "./game-objects/projectile.js";
-import { Turret } from "./game-objects/turret.js";
+import { PointDefenseTurret, Turret } from "./game-objects/turret.js";
 
 /** @type {HTMLCanvasElement} */
 //@ts-ignore canvas is an HTMLCanvasElement
@@ -39,9 +39,25 @@ class Game {
 		this.projectiles = [];
 		this.turrets.forEach((t) => {
 			t.targets = this.enemies;
-			this.projectiles.concat(t.projectiles);
+			if (t.projectiles.length > 0) {
+				this.projectiles = this.projectiles.concat(t.projectiles);
+			}
 		});
 
+		this.projectiles.forEach((p) => {
+			for (let i = 0; i < this.enemies.length; i++) {
+				let enemy = this.enemies[i];
+				let distance =
+					Math.hypot(p.x - enemy.x, p.y - enemy.y) - enemy.radius;
+				if (distance <= 0) {
+					enemy.health -= p.damage;
+					p.isVisible = false;
+					console.log(enemy, p, distance);
+				}
+			}
+		});
+
+		this.enemies = this.enemies.filter((e) => e.isAlive);
 	}
 }
 
@@ -52,13 +68,13 @@ class GameLevel {
 let game = new Game();
 
 game.turrets = [
-	new Turret(ctx, 100, 100),
+	new PointDefenseTurret(ctx, 100, 100),
 	new Turret(ctx, canvas.width - 100, 100),
 	new Turret(ctx, 100, canvas.height - 100),
 	new Turret(ctx, canvas.width - 100, canvas.height - 100),
 ];
 
-for (let i = 0; i < 1; i++) {
+for (let i = 0; i < 50 ; i++) {
 	game.enemies.push(new Enemy(ctx, canvas.width / 2, canvas.height / 2));
 }
 
@@ -72,7 +88,7 @@ function gameLoop(timestamp) {
 	currentTime = timestamp;
 	lastDirectionChange += elapsedTime;
 
-	console.log(timestamp, elapsedTime);
+	// console.log(timestamp, elapsedTime);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	game.enemies.forEach((r) => {
@@ -85,6 +101,7 @@ function gameLoop(timestamp) {
 		r.draw();
 	});
 
+	game.update();
 	// t1.update(elapsedTime);
 	// t1.draw();
 
