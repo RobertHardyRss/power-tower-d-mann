@@ -1,7 +1,11 @@
 //@ts-check
 import { Enemy } from "./game-objects/enemy.js";
 import { Projectile } from "./game-objects/projectile.js";
-import { PointDefenseTurret, Turret } from "./game-objects/turret.js";
+import {
+	MainTurret,
+	PointDefenseTurret,
+	Turret,
+} from "./game-objects/turret.js";
 
 /** @type {HTMLCanvasElement} */
 //@ts-ignore canvas is an HTMLCanvasElement
@@ -69,12 +73,12 @@ let game = new Game();
 
 game.turrets = [
 	new PointDefenseTurret(ctx, 100, 100),
-	new Turret(ctx, canvas.width - 100, 100),
-	new Turret(ctx, 100, canvas.height - 100),
-	new Turret(ctx, canvas.width - 100, canvas.height - 100),
+	new MainTurret(ctx, canvas.width - 100, 100),
+	// new Turret(ctx, 100, canvas.height - 100),
+	// new Turret(ctx, canvas.width - 100, canvas.height - 100),
 ];
 
-for (let i = 0; i < 50 ; i++) {
+for (let i = 0; i < 50; i++) {
 	game.enemies.push(new Enemy(ctx, canvas.width / 2, canvas.height / 2));
 }
 

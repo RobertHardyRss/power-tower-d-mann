@@ -133,5 +133,20 @@ export class PointDefenseTurret extends Turret {
 		super(ctx, sx, sy);
 
 		this.color = "red";
+		this.range = 100;
+	}
+}
+
+export class MainTurret extends Turret {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} sx
+	 * @param {number} sy
+	 */
+	constructor(ctx, sx, sy) {
+		super(ctx, sx, sy);
+
+		this.color = "purple";
+		this.range = 150;
 	}
 }
