@@ -15,6 +15,11 @@ export class Turret {
 		this.y = sy;
 		this.color = "black";
 		this.angle = 0;
+		this.targetAngle = 0;
+		this.angleDiff = 0; // this is the difference between our target angle and current
+
+		this.rotationRate = 0.05;
+		this.angleTolerance = 0.2;
 
 		this.range = 300;
 
@@ -76,7 +81,10 @@ export class Turret {
 
 		this.lastFireTime += elapsedTime;
 
-		if (this.lastFireTime >= this.rateOfFire) {
+		if (
+			this.lastFireTime >= this.rateOfFire &&
+			Math.abs(this.angleDiff) <= this.angleTolerance
+		) {
 			this.lastFireTime = 0;
 			this.projectiles.push(
 				new Projectile(
@@ -84,14 +92,22 @@ export class Turret {
 					this.x,
 					this.y,
 					this.target.x,
-					this.target.y
+					this.target.y,
+					this.angle
 				)
 			);
 		}
 
 		let dx = this.x - this.target.x;
 		let dy = this.y - this.target.y;
-		this.angle = Math.atan2(dy, dx);
+		this.targetAngle = Math.atan2(dy, dx);
+
+		this.angleDiff = this.targetAngle - this.angle;
+		if (this.angleDiff < 0) {
+			this.angle -= this.rotationRate;
+		} else if (this.angleDiff > 0) {
+			this.angle += this.rotationRate;
+		}
 	}
 
 	draw() {

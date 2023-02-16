@@ -7,8 +7,9 @@ export class Projectile {
 	 * @param {number} sy
 	 * @param {number} tx
 	 * @param {number} ty
+	 * @param {number} angle
 	 */
-	constructor(ctx, sx, sy, tx, ty) {
+	constructor(ctx, sx, sy, tx, ty, angle) {
 		this.ctx = ctx;
 		const dx = sx - tx;
 		const dy = sy - ty;
@@ -18,7 +19,6 @@ export class Projectile {
 
 		this.distanceTraveled = 0;
 
-		const angle = Math.atan2(dy, dx);
 		this.xOffset = Math.cos(angle);
 		this.yOffset = Math.sin(angle);
 
