@@ -60,9 +60,11 @@ export class Enemy {
 	draw() {
 		if (!this.isAlive) return;
 
+		this.ctx.save();
 		this.ctx.beginPath();
 		this.ctx.fillStyle = this.color;
 		this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
 		this.ctx.fill();
+		this.ctx.restore();
 	}
 }
