@@ -4,18 +4,14 @@
 	box-sizing: border-box;
 }
 
-body {
+#game-canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100vw;
 	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 }
 
-#game-canvas {
-	width: 1376;
-	height: 800;
-	background-color: black;
-	border: ridge 15px rgb(255, 0, 0);
+.asset {
+	display: none;
 }
