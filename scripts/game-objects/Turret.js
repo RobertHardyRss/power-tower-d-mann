@@ -1,37 +1,35 @@
 //@ts-check
 import { Projectile } from "./projectiles.js";
-import { RoundThing } from "./Round-thing.js";
+import { Enemy } from "./Enemy.js";
 export class Turret {
 	/**
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {number} sx
-     * @param {number} sy
-     * @param {RoundThing[]} targets
-     */
-	constructor(ctx,sx, sy, targets) {
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} sx
+	 * @param {number} sy
+	 */
+	constructor(ctx, sx, sy) {
 		this.x = sx;
 		this.y = sy;
-        this.ctx = ctx
-		this.color = "black";
+		this.ctx = ctx;
+		this.color = "white";
 		this.angle = 0;
-
-		this.range = 400;
-
-		this.targets = targets;
-		/** @type { RoundThing | null } */
+		this.rotateRate = 0.08
+		this.accuracy = 0.5
+		this.range = 200;
+		/**@type {Enemy[]} */
+		this.targets = [];
+		/** @type { Enemy | null } */
 		this.target = null;
-
 		/** @type { Projectile[] } */
 		this.projectiles = [];
 		this.rateOfFire = 100; // milliseconds
 		this.lastFireTime = 0;
+		this.targetAngle = 0
 	}
 
 	acquireTarget() {
-		// if my current target is out of range, set target to null
-		// if I already have a target return
 		if (this.target != null) {
-			if (this.getDistanceToTarget(this.target) > this.range) {
+			if (this.getDistanceToTarget(this.target) > this.range || !this.target.isAlive) {
 				this.target = null;
 				this.projectiles = [];
 				return;
@@ -60,28 +58,42 @@ export class Turret {
 	update(elapsedTime) {
 		this.acquireTarget();
 
-        this.projectiles.forEach((p) => {
+		this.projectiles.forEach((p) => {
 			p.update();
 		});
 
-       this.projectiles = this.projectiles.filter((p) => p.isVisible)
+		this.projectiles = this.projectiles.filter((p) => p.isVisible);
 
 		if (this.target == null) return;
 
 		this.lastFireTime += elapsedTime;
 
-		if (this.lastFireTime >= this.rateOfFire) {
-			this.lastFireTime = 0;
-			this.projectiles.push(
-				new Projectile(this.ctx,this.x, this.y, this.target.x, this.target.y)
-			);
-		}
-
+			if (this.lastFireTime >= this.rateOfFire) {
+				this.lastFireTime = 0;
+				this.projectiles.push(
+					new Projectile(
+						this.ctx,
+						this.x,
+						this.y,
+						this.target.x,
+						this.target.y,
+						this.angle
+					)
+				);
+			}
 		
 
 		let dx = this.x - this.target.x;
 		let dy = this.y - this.target.y;
-		this.angle = Math.atan2(dy, dx);
+		this.targetAngle = Math.atan2(dy, dx);
+		let diff = ( this.targetAngle - this.angle) % 360
+		if (diff > 180){
+			diff = -(360 - diff)
+		}
+		this.angle +=  this.rotateRate * diff
+
+
+
 	}
 
 	draw() {

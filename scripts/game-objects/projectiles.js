@@ -7,16 +7,17 @@ export class Projectile {
      * @param {number} tx
      * @param {number} [ty]
      */
-	constructor(ctx, sx, sy, tx, ty) {
+	constructor(ctx, sx, sy, tx, ty, angle) {
 		this.dx = sx - tx;
 		// @ts-ignore
 		this.dy = sy - ty;
+		this.angle = angle
         this.ctx = ctx
 		this.tx = tx;
 		this.ty = ty;
+		this.damage = 0
 		this.distance = Math.hypot(this.dx, this.dy)
 		this.distanceTraveled = 0;
-        this.angle = Math.atan2(this.dy,this.dx)
         this.xOffest = Math.cos(this.angle)
         this.yOffest = Math.sin(this.angle)
 		this.x = sx;
