@@ -13,8 +13,17 @@ export class Turret {
 		this.ctx = ctx;
 		this.x = sx;
 		this.y = sy;
+		this.size = 32;
+		this.type = "turret";
+		this.name = "no name";
+
 		this.color = "black";
 		this.angle = 0;
+		this.targetAngle = 0;
+		this.angleDiff = 0; // this is the difference between our target angle and current
+
+		this.rotationRate = 0.05;
+		this.angleTolerance = 0.1;
 
 		this.range = 300;
 
@@ -76,22 +85,40 @@ export class Turret {
 
 		this.lastFireTime += elapsedTime;
 
-		if (this.lastFireTime >= this.rateOfFire) {
+		if (
+			this.lastFireTime >= this.rateOfFire &&
+			Math.abs(this.angleDiff) <= this.angleTolerance
+		) {
 			this.lastFireTime = 0;
 			this.projectiles.push(
-				new Projectile(
-					this.ctx,
-					this.x,
-					this.y,
-					this.target.x,
-					this.target.y
-				)
+				new Projectile(this.ctx, this.x, this.y, this.range, this.angle)
 			);
 		}
 
 		let dx = this.x - this.target.x;
 		let dy = this.y - this.target.y;
-		this.angle = Math.atan2(dy, dx);
+		this.targetAngle = Math.atan2(dy, dx);
+
+		let rotationDirectionMultiplier = this.getRotationDirection();
+		this.angle += this.rotationRate * rotationDirectionMultiplier;
+		if (this.angle > Math.PI) {
+			this.angle = -(Math.PI - (this.angle - Math.PI));
+		} else if (this.angle < -Math.PI) {
+			this.angle = Math.PI - (-this.angle - Math.PI);
+		}
+
+		this.angle = Math.min(Math.max(this.angle, -Math.PI), Math.PI);
+	}
+
+	getRotationDirection() {
+		this.angleDiff = Math.abs(
+			this.angle + Math.PI - (this.targetAngle + Math.PI)
+		);
+
+		// if (this.angleDiff <= this.rotationRate) return 0;
+
+		const P2 = Math.PI * 2;
+		return (this.angle - this.targetAngle + P2) % P2 > Math.PI ? 1 : -1;
 	}
 
 	draw() {
@@ -102,8 +129,18 @@ export class Turret {
 		this.ctx.save();
 		this.ctx.beginPath();
 		this.ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
-		this.ctx.fillStyle = "hsla(0, 100%, 50%, 0.5)";
+		this.ctx.fillStyle = "hsla(0, 100%, 50%, 0.1)";
 		this.ctx.fill();
+		this.ctx.restore();
+
+		this.ctx.save();
+		this.ctx.beginPath();
+		this.ctx.globalAlpha = 0.1;
+		this.ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+		this.ctx.fillStyle = this.color;
+		this.ctx.strokeStyle = "black";
+		this.ctx.fill();
+		this.ctx.stroke();
 		this.ctx.restore();
 
 		this.ctx.save();
@@ -128,12 +165,18 @@ export class PointDefenseTurret extends Turret {
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {number} sx
 	 * @param {number} sy
+	 * @param {string} name
+	 * @param {number} angle
 	 */
-	constructor(ctx, sx, sy) {
+	constructor(ctx, sx, sy, name, angle) {
 		super(ctx, sx, sy);
 
-		this.color = "red";
-		this.range = 100;
+		this.angle = angle;
+		this.color = "black";
+		this.range = 75;
+		this.size = 32;
+		this.type = "Point Defense";
+		this.name = name;
 	}
 }
 
@@ -142,11 +185,17 @@ export class MainTurret extends Turret {
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {number} sx
 	 * @param {number} sy
+	 * @param {string} name
+	 * @param {number} angle
 	 */
-	constructor(ctx, sx, sy) {
+	constructor(ctx, sx, sy, name, angle) {
 		super(ctx, sx, sy);
 
+		this.angle = angle;
 		this.color = "purple";
-		this.range = 150;
+		this.range = 200;
+		this.size = 64;
+		this.type = "Main";
+		this.name = name;
 	}
 }

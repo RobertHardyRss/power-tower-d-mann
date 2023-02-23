@@ -5,20 +5,16 @@ export class Projectile {
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {number} sx
 	 * @param {number} sy
-	 * @param {number} tx
-	 * @param {number} ty
+	 * @param {number} range
+	 * @param {number} angle
 	 */
-	constructor(ctx, sx, sy, tx, ty) {
+	constructor(ctx, sx, sy, range, angle) {
 		this.ctx = ctx;
-		const dx = sx - tx;
-		const dy = sy - ty;
-		this.distance = Math.hypot(dx, dy);
-
-		this.damage = 10;
+		this.distance = range;
+		this.damage = 20;
 
 		this.distanceTraveled = 0;
 
-		const angle = Math.atan2(dy, dx);
 		this.xOffset = Math.cos(angle);
 		this.yOffset = Math.sin(angle);
 
