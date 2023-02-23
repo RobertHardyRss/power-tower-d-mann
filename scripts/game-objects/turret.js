@@ -13,13 +13,17 @@ export class Turret {
 		this.ctx = ctx;
 		this.x = sx;
 		this.y = sy;
+		this.size = 32;
+		this.type = "turret";
+		this.name = "no name";
+
 		this.color = "black";
 		this.angle = 0;
 		this.targetAngle = 0;
 		this.angleDiff = 0; // this is the difference between our target angle and current
 
 		this.rotationRate = 0.05;
-		this.angleTolerance = 0.2;
+		this.angleTolerance = 0.1;
 
 		this.range = 300;
 
@@ -87,14 +91,7 @@ export class Turret {
 		) {
 			this.lastFireTime = 0;
 			this.projectiles.push(
-				new Projectile(
-					this.ctx,
-					this.x,
-					this.y,
-					this.target.x,
-					this.target.y,
-					this.angle
-				)
+				new Projectile(this.ctx, this.x, this.y, this.range, this.angle)
 			);
 		}
 
@@ -102,50 +99,26 @@ export class Turret {
 		let dy = this.y - this.target.y;
 		this.targetAngle = Math.atan2(dy, dx);
 
-		// angle is between 0 and 3.14 and 0 and -3.14
-
-		let rotationDirectionMultipier = 1;
-
-		if (this.targetAngle >= 0 && this.angle >= 0) {
-			//this means we are in the same 180 arc
-			if (this.targetAngle < this.angle) {
-				//rotate left
-			}
-		}
-		if (this.angle > 0 && this.angle < 0) {
-			rotationDirectionMultipier = 1;
-		} else {
-			//rotate right
-			rotationDirectionMultipier = -1;
+		let rotationDirectionMultiplier = this.getRotationDirection();
+		this.angle += this.rotationRate * rotationDirectionMultiplier;
+		if (this.angle > Math.PI) {
+			this.angle = -(Math.PI - (this.angle - Math.PI));
+		} else if (this.angle < -Math.PI) {
+			this.angle = Math.PI - (-this.angle - Math.PI);
 		}
 
-		if (this.angle >= 0 && this.angle >= 0) {
-			//this means we are in the same 180 arc
-			if (this.targetAngle < this.angle) {
-				//rotate left
-			}
-		}
-		if (this.angle < 0 && this.angle < 0) {
-		} else {
-			const twelveOclock = Math.PI / 2;
-			const sixOclock = twelveOclock * -1;
+		this.angle = Math.min(Math.max(this.angle, -Math.PI), Math.PI);
+	}
 
-			if (this.targetAngle > 0 && this.angle <= twelveOclock) {
-				if (this.angle <= twelveOclock) {
-					// then we are on right side
-				} else {
-					//we are on the left
-				}
+	getRotationDirection() {
+		this.angleDiff = Math.abs(
+			this.angle + Math.PI - (this.targetAngle + Math.PI)
+		);
 
-				if (this.targetAngle >= sixOclock) {
-					//then target is on the right
-				} else {
-					//target is on the left side
-				}
-			}
-		}
+		// if (this.angleDiff <= this.rotationRate) return 0;
 
-		this.angle += this.rotationRate * rotationDirectionMultipier;
+		const P2 = Math.PI * 2;
+		return (this.angle - this.targetAngle + P2) % P2 > Math.PI ? 1 : -1;
 	}
 
 	draw() {
@@ -156,8 +129,18 @@ export class Turret {
 		this.ctx.save();
 		this.ctx.beginPath();
 		this.ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
-		this.ctx.fillStyle = "hsla(0, 100%, 50%, 0.5)";
+		this.ctx.fillStyle = "hsla(0, 100%, 50%, 0.1)";
 		this.ctx.fill();
+		this.ctx.restore();
+
+		this.ctx.save();
+		this.ctx.beginPath();
+		this.ctx.globalAlpha = 0.1;
+		this.ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+		this.ctx.fillStyle = this.color;
+		this.ctx.strokeStyle = "black";
+		this.ctx.fill();
+		this.ctx.stroke();
 		this.ctx.restore();
 
 		this.ctx.save();
@@ -182,12 +165,18 @@ export class PointDefenseTurret extends Turret {
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {number} sx
 	 * @param {number} sy
+	 * @param {string} name
+	 * @param {number} angle
 	 */
-	constructor(ctx, sx, sy) {
+	constructor(ctx, sx, sy, name, angle) {
 		super(ctx, sx, sy);
 
-		this.color = "red";
-		this.range = 100;
+		this.angle = angle;
+		this.color = "black";
+		this.range = 75;
+		this.size = 32;
+		this.type = "Point Defense";
+		this.name = name;
 	}
 }
 
@@ -196,11 +185,17 @@ export class MainTurret extends Turret {
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {number} sx
 	 * @param {number} sy
+	 * @param {string} name
+	 * @param {number} angle
 	 */
-	constructor(ctx, sx, sy) {
+	constructor(ctx, sx, sy, name, angle) {
 		super(ctx, sx, sy);
 
+		this.angle = angle;
 		this.color = "purple";
-		this.range = 150;
+		this.range = 200;
+		this.size = 64;
+		this.type = "Main";
+		this.name = name;
 	}
 }

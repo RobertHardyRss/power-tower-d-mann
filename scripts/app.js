@@ -1,114 +1,48 @@
 //@ts-check
+import { starFieldBackground } from "./game-objects/background.js";
 import { Enemy } from "./game-objects/enemy.js";
-import { Projectile } from "./game-objects/projectile.js";
-import {
-	MainTurret,
-	PointDefenseTurret,
-	Turret,
-} from "./game-objects/turret.js";
+import { Game } from "./game-objects/game.js";
+import { ctx, canvas } from "./utility/canvas.js";
 
-/** @type {HTMLCanvasElement} */
-//@ts-ignore canvas is an HTMLCanvasElement
-const canvas = document.getElementById("game-canvas");
-/** @type {CanvasRenderingContext2D} */
-//@ts-ignore
-const ctx = canvas.getContext("2d");
-canvas.width = 800;
-canvas.height = 600;
+let game = new Game(ctx, canvas);
 
-class Game {
-	constructor() {
-		this.player = {
-			health: 100,
-			credits: 0,
-		};
-		this.gridSize = 32;
-		this.currentLevel = undefined;
-
-		/** @type { Turret[] } */
-		this.turrets = [];
-		/** @type { Enemy[] } */
-		this.enemies = [];
-		/** @type { Projectile[] } */
-		this.projectiles = [];
-	}
-
-	initTurrets() {
-		this.turrets.forEach((t) => {
-			t.targets = this.enemies;
-		});
-	}
-
-	update() {
-		this.projectiles = [];
-		this.turrets.forEach((t) => {
-			t.targets = this.enemies;
-			if (t.projectiles.length > 0) {
-				this.projectiles = this.projectiles.concat(t.projectiles);
-			}
-		});
-
-		this.projectiles.forEach((p) => {
-			for (let i = 0; i < this.enemies.length; i++) {
-				let enemy = this.enemies[i];
-				let distance =
-					Math.hypot(p.x - enemy.x, p.y - enemy.y) - enemy.radius;
-				if (distance <= 0) {
-					enemy.health -= p.damage;
-					p.isVisible = false;
-					console.log(enemy, p, distance);
-				}
-			}
-		});
-
-		this.enemies = this.enemies.filter((e) => e.isAlive);
-	}
+for (let i = 0; i < 10; i++) {
+	const offset = 300;
+	game.enemies.push(new Enemy(ctx, 0, -offset));
+	game.enemies.push(new Enemy(ctx, 0, offset));
+	game.enemies.push(new Enemy(ctx, -offset, 0));
+	game.enemies.push(new Enemy(ctx, offset, 0));
 }
 
-class GameLevel {
-	constructor() {}
-}
-
-let game = new Game();
-
-game.turrets = [
-	new PointDefenseTurret(ctx, 100, 100),
-	new MainTurret(ctx, canvas.width - 100, 100),
-	// new Turret(ctx, 100, canvas.height - 100),
-	// new Turret(ctx, canvas.width - 100, canvas.height - 100),
-];
-
-for (let i = 0; i < 50; i++) {
-	game.enemies.push(new Enemy(ctx, canvas.width / 2, canvas.height / 2));
-}
-
-game.initTurrets();
-
-let lastDirectionChange = 0;
 let currentTime = 0;
 
+/**
+ * @param {number} timestamp
+ */
 function gameLoop(timestamp) {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	starFieldBackground.update();
+	starFieldBackground.draw();
+
+	ctx.save();
+	ctx.translate(canvas.width / 2, canvas.height / 2);
+	ctx.scale(game.scale, game.scale);
+
 	let elapsedTime = timestamp - currentTime;
 	currentTime = timestamp;
-	lastDirectionChange += elapsedTime;
-
-	// console.log(timestamp, elapsedTime);
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	game.enemies.forEach((r) => {
 		r.update(elapsedTime);
 		r.draw();
 	});
 
-	game.turrets.forEach((r) => {
-		r.update(elapsedTime);
-		r.draw();
-	});
+	game.playerShip.update(elapsedTime);
+	game.playerShip.draw();
 
 	game.update();
-	// t1.update(elapsedTime);
-	// t1.draw();
 
+	ctx.restore();
 	window.requestAnimationFrame(gameLoop);
 }
 
