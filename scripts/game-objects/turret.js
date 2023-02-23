@@ -15,6 +15,11 @@ export class Turret {
 		this.y = sy;
 		this.color = "black";
 		this.angle = 0;
+		this.targetAngle = 0;
+		this.angleDiff = 0; // this is the difference between our target angle and current
+
+		this.rotationRate = 0.05;
+		this.angleTolerance = 0.2;
 
 		this.range = 300;
 
@@ -76,7 +81,10 @@ export class Turret {
 
 		this.lastFireTime += elapsedTime;
 
-		if (this.lastFireTime >= this.rateOfFire) {
+		if (
+			this.lastFireTime >= this.rateOfFire &&
+			Math.abs(this.angleDiff) <= this.angleTolerance
+		) {
 			this.lastFireTime = 0;
 			this.projectiles.push(
 				new Projectile(
@@ -84,14 +92,60 @@ export class Turret {
 					this.x,
 					this.y,
 					this.target.x,
-					this.target.y
+					this.target.y,
+					this.angle
 				)
 			);
 		}
 
 		let dx = this.x - this.target.x;
 		let dy = this.y - this.target.y;
-		this.angle = Math.atan2(dy, dx);
+		this.targetAngle = Math.atan2(dy, dx);
+
+		// angle is between 0 and 3.14 and 0 and -3.14
+
+		let rotationDirectionMultipier = 1;
+
+		if (this.targetAngle >= 0 && this.angle >= 0) {
+			//this means we are in the same 180 arc
+			if (this.targetAngle < this.angle) {
+				//rotate left
+			}
+		}
+		if (this.angle > 0 && this.angle < 0) {
+			rotationDirectionMultipier = 1;
+		} else {
+			//rotate right
+			rotationDirectionMultipier = -1;
+		}
+
+		if (this.angle >= 0 && this.angle >= 0) {
+			//this means we are in the same 180 arc
+			if (this.targetAngle < this.angle) {
+				//rotate left
+			}
+		}
+		if (this.angle < 0 && this.angle < 0) {
+		} else {
+			const twelveOclock = Math.PI / 2;
+			const sixOclock = twelveOclock * -1;
+
+			if (this.targetAngle > 0 && this.angle <= twelveOclock) {
+				if (this.angle <= twelveOclock) {
+					// then we are on right side
+				} else {
+					//we are on the left
+				}
+
+				if (this.targetAngle >= sixOclock) {
+					//then target is on the right
+				} else {
+					//target is on the left side
+				}
+			}
+		}
+
+		this.angle += this.rotationRate * rotationDirectionMultipier;
 	}
 
 	draw() {
@@ -133,5 +187,20 @@ export class PointDefenseTurret extends Turret {
 		super(ctx, sx, sy);
 
 		this.color = "red";
+		this.range = 100;
+	}
+}
+
+export class MainTurret extends Turret {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} sx
+	 * @param {number} sy
+	 */
+	constructor(ctx, sx, sy) {
+		super(ctx, sx, sy);
+
+		this.color = "purple";
+		this.range = 150;
 	}
 }
