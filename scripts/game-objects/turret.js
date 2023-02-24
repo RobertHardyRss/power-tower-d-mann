@@ -115,8 +115,6 @@ export class Turret {
 			this.angle + Math.PI - (this.targetAngle + Math.PI)
 		);
 
-		// if (this.angleDiff <= this.rotationRate) return 0;
-
 		const P2 = Math.PI * 2;
 		return (this.angle - this.targetAngle + P2) % P2 > Math.PI ? 1 : -1;
 	}
