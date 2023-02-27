@@ -80,7 +80,7 @@ export class EnemyDrone extends Enemy {
 	constructor(ctx, x, y) {
 		super(ctx, x, y);
 
-		this.speed = 10;
+		this.speed = 1;
 		this.angle = Math.atan2(this.y, this.x);
 
 		this.xOffset = Math.cos(this.angle);

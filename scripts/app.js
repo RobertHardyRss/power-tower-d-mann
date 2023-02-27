@@ -1,6 +1,6 @@
 //@ts-check
 import { starFieldBackground } from "./game-objects/background.js";
-import { Enemy, EnemyDrone } from "./game-objects/enemy.js";
+import { EnemyDrone } from "./game-objects/enemy.js";
 import { Game } from "./game-objects/game.js";
 import { ctx, canvas } from "./utility/canvas.js";
 import { ENEMY_SPAWN_POINTS } from "./utility/constants.js";
