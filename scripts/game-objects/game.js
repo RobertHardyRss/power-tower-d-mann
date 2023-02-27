@@ -4,7 +4,6 @@ import { Enemy } from "./enemy.js";
 import { PlayerShip } from "./player-ship.js";
 import { Projectile } from "./projectile.js";
 
-
 export class Game {
 	/**
 	 * @param {CanvasRenderingContext2D} ctx
