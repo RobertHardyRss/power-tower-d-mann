@@ -78,9 +78,10 @@ export class EnemyDrone extends Enemy {
 	 * @param {number} x
 	 * @param {number} y
 	 */
-	 constructor(ctx, x, y) {
+	constructor(ctx, x, y) {
 		super(ctx, x, y);
 
+		this.speed = 1;
 		this.angle = Math.atan2(this.y, this.x);
 
 		this.xOffset = Math.cos(this.angle);
@@ -91,6 +92,5 @@ export class EnemyDrone extends Enemy {
 	 update(elapsedTime) {
 		this.x -= this.xOffset * this.speed;
 		this.y -= this.yOffset * this.speed;
-
-	 }
+	}
 }
