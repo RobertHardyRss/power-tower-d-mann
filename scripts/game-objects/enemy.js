@@ -11,7 +11,10 @@ export class Enemy {
 		this.x = x;
 		this.y = y;
 
-		this.health = 100;
+		this.level = 1;
+		this.speed = 1;
+
+		this.health = 1;
 		this.isAlive = true;
 
 		this.xDirection = 1;
@@ -67,4 +70,27 @@ export class Enemy {
 		this.ctx.fill();
 		this.ctx.restore();
 	}
+}
+
+export class EnemyDrone extends Enemy {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} x
+	 * @param {number} y
+	 */
+	 constructor(ctx, x, y) {
+		super(ctx, x, y);
+
+		this.angle = Math.atan2(this.y, this.x);
+
+		this.xOffset = Math.cos(this.angle);
+		this.yOffset = Math.sin(this.angle);
+
+	 }
+
+	 update(elapsedTime) {
+		this.x -= this.xOffset * this.speed;
+		this.y -= this.yOffset * this.speed;
+
+	 }
 }
