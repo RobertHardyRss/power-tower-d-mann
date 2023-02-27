@@ -1,17 +1,28 @@
 //@ts-check
 import { starFieldBackground } from "./game-objects/background.js";
+<<<<<<< HEAD
 import { EnemyDrone, Enemy } from "./game-objects/enemy.js";
 import { Game } from "./game-objects/game.js";
 import { ctx, canvas } from "./utility/canvas.js";
 import { ENEMY_SPAWN_POINTS } from "./utility/constants.js";
 
 
+=======
+import { EnemyDrone } from "./game-objects/enemy.js";
+import { Game } from "./game-objects/game.js";
+import { ctx, canvas } from "./utility/canvas.js";
+import { ENEMY_SPAWN_POINTS } from "./utility/constants.js";
+>>>>>>> origin/robert
 
 let game = new Game(ctx, canvas);
 
 for (let i = 0; i < ENEMY_SPAWN_POINTS.length; i++) {
+<<<<<<< HEAD
     let location = ENEMY_SPAWN_POINTS[i]
 	const offset = 300;
+=======
+	let location = ENEMY_SPAWN_POINTS[i];
+>>>>>>> origin/robert
 	game.enemies.push(new EnemyDrone(ctx, location.x, location.y));
 }
 

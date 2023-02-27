@@ -1,6 +1,14 @@
 //@ts-check
+<<<<<<< HEAD
 import { Projectile } from "./projectiles.js";
 import { Enemy } from "./Enemy.js";
+=======
+
+import { Projectile } from "./projectile.js";
+import { Enemy } from "./enemy.js";
+import { playerSpriteSheet } from "../utility/sprite-sheet.js";
+
+>>>>>>> origin/robert
 export class Turret {
 	/**
 	 * @param {CanvasRenderingContext2D} ctx
@@ -24,7 +32,17 @@ export class Turret {
 		this.projectiles = [];
 		this.rateOfFire = 100; // milliseconds
 		this.lastFireTime = 0;
+<<<<<<< HEAD
 		this.targetAngle = 0
+=======
+
+		this.image = playerSpriteSheet.image;
+		this.turretSpriteFrame = playerSpriteSheet.getFrame(
+			"turret-point-defense"
+		);
+		this.width = 31;
+		this.height = 20;
+>>>>>>> origin/robert
 	}
 
 	acquireTarget() {
@@ -93,7 +111,12 @@ export class Turret {
 		this.angle +=  this.rotateRate * diff
 
 
+<<<<<<< HEAD
 
+=======
+		const P2 = Math.PI * 2;
+		return (this.angle - this.targetAngle + P2) % P2 > Math.PI ? 1 : -1;
+>>>>>>> origin/robert
 	}
 
 	draw() {
@@ -101,6 +124,7 @@ export class Turret {
 			p.draw();
 		});
 
+<<<<<<< HEAD
 		this.ctx.save();
 		this.ctx.beginPath();
 		this.ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
@@ -120,3 +144,94 @@ export class Turret {
 		this.ctx.restore();
 	}
 }
+=======
+		// draw firing arc
+		// this.ctx.save();
+		// this.ctx.beginPath();
+		// this.ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
+		// this.ctx.fillStyle = "hsla(0, 100%, 50%, 0.1)";
+		// this.ctx.fill();
+		// this.ctx.restore();
+
+		this.ctx.save();
+		this.ctx.translate(this.x, this.y);
+		this.ctx.rotate(this.angle);
+
+		this.ctx.drawImage(
+			this.image,
+			this.turretSpriteFrame.frame.x, // sx
+			this.turretSpriteFrame.frame.y, // sy
+			this.turretSpriteFrame.sourceSize.w, // sw
+			this.turretSpriteFrame.sourceSize.h, // sh
+			-this.width * this.turretSpriteFrame.pivot.x, // dx
+			-this.height * this.turretSpriteFrame.pivot.y, // dy
+			this.width, // dw
+			this.height // dh
+		);
+
+		this.ctx.restore();
+	}
+}
+
+export class PointDefenseTurret extends Turret {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} sx
+	 * @param {number} sy
+	 * @param {string} name
+	 * @param {number} angle
+	 */
+	constructor(ctx, sx, sy, name, angle) {
+		super(ctx, sx, sy);
+
+		this.angle = angle;
+		this.color = "black";
+		this.range = 75;
+		this.size = 32;
+		this.type = "Point Defense";
+		this.name = name;
+	}
+}
+
+export class MainTurret extends Turret {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} sx
+	 * @param {number} sy
+	 * @param {string} name
+	 * @param {number} angle
+	 */
+	constructor(ctx, sx, sy, name, angle) {
+		super(ctx, sx, sy);
+
+		this.angle = angle;
+		this.color = "purple";
+		this.range = 200;
+		this.size = 64;
+		this.type = "Main";
+		this.name = name;
+
+		this.turretSpriteFrame = playerSpriteSheet.getFrame(
+			"turret-main-forward"
+		);
+		this.width = 47;
+		this.height = 32;
+	}
+}
+
+export class MainTurretAlt extends MainTurret {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} sx
+	 * @param {number} sy
+	 * @param {string} name
+	 * @param {number} angle
+	 */
+	constructor(ctx, sx, sy, name, angle) {
+		super(ctx, sx, sy, name, angle);
+		this.turretSpriteFrame = playerSpriteSheet.getFrame("turret-main-aft");
+		this.width = 58;
+		this.height = 32;
+	}
+}
+>>>>>>> origin/robert

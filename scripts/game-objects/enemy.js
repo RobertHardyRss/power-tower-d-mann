@@ -10,6 +10,15 @@ export class Enemy {
 		this.ctx = ctx;
 		this.x = x;
 		this.y = y;
+<<<<<<< HEAD
+=======
+		this.level = 1;
+		this.speed = 1;
+
+		this.health = 1;
+		this.isAlive = true;
+
+>>>>>>> origin/robert
 		this.xDirection = 1;
 		this.yDirection = 1;
 		this.color = "black";
@@ -60,5 +69,27 @@ export class Enemy {
 		this.ctx.fillStyle = this.color;
 		this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
 		this.ctx.fill();
+	}
+}
+
+export class EnemyDrone extends Enemy {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} x
+	 * @param {number} y
+	 */
+	constructor(ctx, x, y) {
+		super(ctx, x, y);
+
+		this.speed = 1;
+		this.angle = Math.atan2(this.y, this.x);
+
+		this.xOffset = Math.cos(this.angle);
+		this.yOffset = Math.sin(this.angle);
+	}
+
+	update(elapsedTime) {
+		this.x -= this.xOffset * this.speed;
+		this.y -= this.yOffset * this.speed;
 	}
 }

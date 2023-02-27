@@ -1,6 +1,7 @@
 //@ts-check
 
-import { MainTurret, PointDefenseTurret } from "./turret.js";
+import { playerSpriteSheet } from "../utility/sprite-sheet.js";
+import { MainTurretAlt, MainTurret, PointDefenseTurret } from "./turret.js";
 
 export class PlayerShip {
 	/**
@@ -27,8 +28,14 @@ export class PlayerShip {
 				Math.PI * 1.5
 			),
 			new MainTurret(ctx, 75, 0, "Main Front", Math.PI),
-			new MainTurret(ctx, -75, 0, "Main Stern", 0),
+			new MainTurretAlt(ctx, -75, 0, "Main Stern", 0),
 		];
+
+		const sprites = playerSpriteSheet;
+		this.width = 316;
+		this.height = 131;
+		this.image = playerSpriteSheet.image;
+		this.shipSpriteFrame = sprites.getFrame("main-ship");
 	}
 
 	getShipPath() {
@@ -75,11 +82,25 @@ export class PlayerShip {
 	}
 
 	draw() {
+		// this.ctx.save();
+		// this.ctx.fillStyle = "silver";
+		// this.ctx.strokeStyle = "black";
+		// this.ctx.fill(this.shipPath);
+		// this.ctx.stroke(this.shipPath);
+		// this.ctx.restore();
+
 		this.ctx.save();
-		this.ctx.fillStyle = "silver";
-		this.ctx.strokeStyle = "black";
-		this.ctx.fill(this.shipPath);
-		this.ctx.stroke(this.shipPath);
+		this.ctx.drawImage(
+			this.image,
+			this.shipSpriteFrame.frame.x, // image starting x
+			this.shipSpriteFrame.frame.y, // image starting y
+			this.shipSpriteFrame.sourceSize.w, // image starting width
+			this.shipSpriteFrame.sourceSize.h, // image starting height
+			-this.width * this.shipSpriteFrame.pivot.x, // x to place image
+			-this.height * this.shipSpriteFrame.pivot.y, // y to place image
+			this.width, // placement width
+			this.height // placement height
+		);
 		this.ctx.restore();
 
 		this.turrets.forEach((t) => {
