@@ -17,7 +17,7 @@ export class Turret {
 		this.type = "turret";
 		this.name = "no name";
 
-		this.color = "black";
+		this.color = "green";
 		this.angle = 0;
 		this.targetAngle = 0;
 		this.angleDiff = 0; // this is the difference between our target angle and current
@@ -34,7 +34,7 @@ export class Turret {
 
 		/** @type { Projectile[] } */
 		this.projectiles = [];
-		this.rateOfFire = 250; // milliseconds
+		this.rateOfFire = 100; // milliseconds
 		this.lastFireTime = 0;
 	}
 
@@ -129,7 +129,7 @@ export class Turret {
 		this.ctx.save();
 		this.ctx.beginPath();
 		this.ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
-		this.ctx.fillStyle = "hsla(0, 100%, 50%, 0.1)";
+		this.ctx.fillStyle = "hsla(175, 100%, 50%, 0.1)";
 		this.ctx.fill();
 		this.ctx.restore();
 
@@ -139,6 +139,7 @@ export class Turret {
 		this.ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
 		this.ctx.fillStyle = this.color;
 		this.ctx.strokeStyle = "black";
+		
 		this.ctx.fill();
 		this.ctx.stroke();
 		this.ctx.restore();
@@ -173,7 +174,7 @@ export class PointDefenseTurret extends Turret {
 
 		this.angle = angle;
 		this.color = "black";
-		this.range = 75;
+		this.range = 100;
 		this.size = 32;
 		this.type = "Point Defense";
 		this.name = name;
@@ -193,7 +194,7 @@ export class MainTurret extends Turret {
 
 		this.angle = angle;
 		this.color = "purple";
-		this.range = 200;
+		this.range = 350;
 		this.size = 64;
 		this.type = "Main";
 		this.name = name;

@@ -1,17 +1,18 @@
 //@ts-check
 import { starFieldBackground } from "./game-objects/background.js";
-import { Enemy } from "./game-objects/enemy.js";
+import { Drone, Enemy } from "./game-objects/enemy.js";
 import { Game } from "./game-objects/game.js";
 import { ctx, canvas } from "./utility/canvas.js";
+import { ENEMY_SPAWN_POINTS } from "./utility/constants.js";
+
+
 
 let game = new Game(ctx, canvas);
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < ENEMY_SPAWN_POINTS.length; i++) {
+    let location = ENEMY_SPAWN_POINTS[i]
 	const offset = 300;
-	game.enemies.push(new Enemy(ctx, 0, -offset));
-	game.enemies.push(new Enemy(ctx, 0, offset));
-	game.enemies.push(new Enemy(ctx, -offset, 0));
-	game.enemies.push(new Enemy(ctx, offset, 0));
+	game.enemies.push(new Drone(ctx, location.x, location.y));
 }
 
 let currentTime = 0;
@@ -32,13 +33,14 @@ function gameLoop(timestamp) {
 	let elapsedTime = timestamp - currentTime;
 	currentTime = timestamp;
 
+    game.playerShip.update(elapsedTime);
+	game.playerShip.draw();
+
 	game.enemies.forEach((r) => {
 		r.update(elapsedTime);
 		r.draw();
 	});
 
-	game.playerShip.update(elapsedTime);
-	game.playerShip.draw();
 
 	game.update();
 

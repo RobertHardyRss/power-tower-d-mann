@@ -1,12 +1,13 @@
 //@ts-check
 export class Projectile {
 	/**
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {number} sx
-     * @param {number} sy
-     * @param {number} tx
-     * @param {number} [ty]
-     */
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} sx
+	 * @param {number} sy
+	 * @param {number} tx
+	 * @param {number} [ty]
+	 * @param {number} angle
+	 */
 	constructor(ctx, sx, sy, tx, ty, angle) {
 		this.dx = sx - tx;
 		// @ts-ignore

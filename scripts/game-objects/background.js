@@ -11,7 +11,7 @@ class BackGroundImage {
 		this.ctx = ctx;
 		this.x = 0;
 		this.y = 0;
-		this.scrollRate = 1;
+		this.scrollRate = 2;
 		this.image = image;
 	}
 

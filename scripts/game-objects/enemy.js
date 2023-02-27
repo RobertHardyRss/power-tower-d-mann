@@ -10,10 +10,10 @@ export class Enemy {
 		this.ctx = ctx;
 		this.x = x;
 		this.y = y;
-
-		this.health = 100;
+		this.level = 1;
+		this.health = 1;
 		this.isAlive = true;
-
+		this.speed = 1;
 		this.xDirection = 1;
 		this.yDirection = 1;
 		this.color = "black";
@@ -66,5 +66,19 @@ export class Enemy {
 		this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
 		this.ctx.fill();
 		this.ctx.restore();
+	}
+}
+
+export class Drone extends Enemy {
+	constructor(ctx, x, y) {
+		super(ctx, x, y);
+		this.angle = Math.atan2(this.y, this.x);
+		this.xoffset = Math.cos(this.angle);
+		this.yoffset = Math.sin(this.angle);
+	}
+
+	update(elapsedTime) {
+		this.x -= this.xoffset * this.speed;
+		this.y -= this.yoffset * this.speed;
 	}
 }
