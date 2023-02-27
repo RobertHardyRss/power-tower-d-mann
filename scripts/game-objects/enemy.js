@@ -11,7 +11,7 @@ export class Enemy {
 		this.x = x;
 		this.y = y;
 		this.level = 1;
-		this.speed = 8;
+		this.speed = 1;
 
 		this.health = 1;
 		this.isAlive = true;
@@ -80,14 +80,15 @@ export class EnemyDrone extends Enemy {
 	constructor(ctx, x, y) {
 		super(ctx, x, y);
 
+		this.speed = 1;
 		this.angle = Math.atan2(this.y, this.x);
 
-		this.xoffset = Math.cos(this.angle);
-		this.yoffset = Math.sin(this.angle);
+		this.xOffset = Math.cos(this.angle);
+		this.yOffset = Math.sin(this.angle);
 	}
 
 	update(elapsedTime) {
-		this.x -= this.xoffset * this.speed;
-		this.y -= this.yoffset * this.speed;
+		this.x -= this.xOffset * this.speed;
+		this.y -= this.yOffset * this.speed;
 	}
 }

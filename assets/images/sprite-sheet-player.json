@@ -1,0 +1,49 @@
+{"frames": [
+
+{
+	"filename": "main-ship.png",
+	"frame": {"x":1,"y":1,"w":800,"h":339},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":800,"h":339},
+	"sourceSize": {"w":800,"h":339},
+	"pivot": {"x":0.47625,"y":0.5}
+},
+{
+	"filename": "turret-main-aft.png",
+	"frame": {"x":803,"y":170,"w":126,"h":69},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":69},
+	"sourceSize": {"w":126,"h":69},
+	"pivot": {"x":0.706349,"y":0.5}
+},
+{
+	"filename": "turret-main-forward.png",
+	"frame": {"x":803,"y":1,"w":124,"h":84},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":124,"h":84},
+	"sourceSize": {"w":124,"h":84},
+	"pivot": {"x":0.66129,"y":0.5}
+},
+{
+	"filename": "turret-point-defense.png",
+	"frame": {"x":803,"y":87,"w":124,"h":81},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":124,"h":81},
+	"sourceSize": {"w":124,"h":81},
+	"pivot": {"x":0.669355,"y":0.5}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sprite-sheet-player.png",
+	"format": "RGBA8888",
+	"size": {"w":930,"h":341},
+	"scale": "1",
+	"related_multi_packs": [ "sprite-sheet-enemies.json", "sprite-sheet-misc.json" ],
+	"smartupdate": "$TexturePacker:SmartUpdate:640b697921b6d5f8324e9034d8740664:533b71398019b52fc9d937483d69ef43:d06cafd6834484422a401f10eb4b1f35$"
+}
+}
