@@ -22,6 +22,7 @@ export class Enemy {
 		this.color = "black";
 		this.width = 200;
 		this.height = 150;
+		this.radius = 100
 		this.angle = Math.atan2(this.y, this.x);
 		this.lastDirectionChange = 0;
 		this.changeInterval = Math.random() * 750 + 250;
