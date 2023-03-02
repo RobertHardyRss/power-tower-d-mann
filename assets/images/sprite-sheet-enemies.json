@@ -60,7 +60,7 @@
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":17,"y":5,"w":366,"h":139},
-	"sourceSize": {"w":397,"h":149},
+	"sourceSize": {"w":366,"h":149},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
@@ -69,7 +69,7 @@
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":7,"y":13,"w":454,"h":322},
-	"sourceSize": {"w":478,"h":348},
+	"sourceSize": {"w":454,"h":322},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {

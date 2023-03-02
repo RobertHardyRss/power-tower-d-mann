@@ -27,7 +27,6 @@ export class Turret {
 		this.angleTolerance = 0.1;
 
 		this.range = 300;
-
 		/** @type {Enemy[]} */
 		this.targets = [];
 		/** @type { Enemy | null } */

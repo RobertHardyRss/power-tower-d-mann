@@ -1,5 +1,8 @@
 //@ts-check
 
+import { enemySprite } from "../utility/sprite-sheet.js";
+import { canvas } from "../utility/canvas.js";
+
 export class Enemy {
 	/**
 	 * @param {CanvasRenderingContext2D} ctx
@@ -12,18 +15,21 @@ export class Enemy {
 		this.y = y;
 		this.level = 1;
 		this.speed = 1;
-
 		this.health = 1;
 		this.isAlive = true;
-
 		this.xDirection = 1;
 		this.yDirection = 1;
 		this.color = "black";
-		this.radius = 16;
+		this.width = 200;
+		this.height = 150;
+		this.angle = Math.atan2(this.y, this.x);
 		this.lastDirectionChange = 0;
 		this.changeInterval = Math.random() * 750 + 250;
 		this.setRandomDirection();
 		this.setRandomColor();
+		this.sprite = enemySprite;
+		this.image = enemySprite.image;
+		this.baseFrame = this.sprite.getFrame("enemy-heavy-fighter-2.png");
 	}
 
 	getRandomDirection() {
@@ -43,7 +49,6 @@ export class Enemy {
 
 	update(elapsedTime) {
 		this.lastDirectionChange += elapsedTime;
-
 		if (this.isAlive && this.health <= 0) {
 			this.isAlive = false;
 		}
@@ -54,19 +59,27 @@ export class Enemy {
 			this.lastDirectionChange = 0;
 			this.setRandomDirection();
 		}
-
-		this.x += this.xDirection;
-		this.y += this.yDirection;
 	}
+
+
 
 	draw() {
 		if (!this.isAlive) return;
-
 		this.ctx.save();
-		this.ctx.beginPath();
-		this.ctx.fillStyle = this.color;
-		this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-		this.ctx.fill();
+		this.ctx.translate(this.x, this.y);
+		this.ctx.rotate(this.angle)
+		this.ctx.drawImage(
+			this.image,
+			this.baseFrame.frame.x, // sx
+			this.baseFrame.frame.y, // sy
+			this.baseFrame.sourceSize.w, // sw
+			this.baseFrame.sourceSize.h, // sh
+			-this.width * this.baseFrame.pivot.x, // dx
+			-this.height * this.baseFrame.pivot.y, // dy
+			this.width, // dw
+			this.height // dh
+		);
+
 		this.ctx.restore();
 	}
 }
@@ -81,10 +94,10 @@ export class EnemyDrone extends Enemy {
 		super(ctx, x, y);
 
 		this.speed = 1;
-		this.angle = Math.atan2(this.y, this.x);
+		this.angle2 = Math.atan2(this.y, this.x);
+		this.xOffset = Math.cos(this.angle2);
+		this.yOffset = Math.sin(this.angle2);
 
-		this.xOffset = Math.cos(this.angle);
-		this.yOffset = Math.sin(this.angle);
 	}
 
 	update(elapsedTime) {
