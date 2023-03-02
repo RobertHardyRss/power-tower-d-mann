@@ -44,6 +44,6 @@
 	"size": {"w":930,"h":341},
 	"scale": "1",
 	"related_multi_packs": [ "sprite-sheet-enemies.json", "sprite-sheet-misc.json" ],
-	"smartupdate": "$TexturePacker:SmartUpdate:640b697921b6d5f8324e9034d8740664:533b71398019b52fc9d937483d69ef43:d06cafd6834484422a401f10eb4b1f35$"
+	"smartupdate": "$TexturePacker:SmartUpdate:4f261f9ebd5ef4d136544b645b0cd3d2:dbfa0d86e4efe80f33dc026eab5cffe2:d06cafd6834484422a401f10eb4b1f35$"
 }
 }
