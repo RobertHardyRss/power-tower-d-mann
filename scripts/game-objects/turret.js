@@ -147,8 +147,8 @@ export class Turret {
 			this.image,
 			this.turretSpriteFrame.frame.x, // sx
 			this.turretSpriteFrame.frame.y, // sy
-			this.turretSpriteFrame.sourceSize.w, // sw
-			this.turretSpriteFrame.sourceSize.h, // sh
+			this.turretSpriteFrame.frame.w, // sw
+			this.turretSpriteFrame.frame.h, // sh
 			-this.width * this.turretSpriteFrame.pivot.x, // dx
 			-this.height * this.turretSpriteFrame.pivot.y, // dy
 			this.width, // dw

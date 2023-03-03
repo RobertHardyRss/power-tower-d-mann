@@ -22,7 +22,7 @@ export class Enemy {
 		this.color = "black";
 		this.width = 200;
 		this.height = 150;
-		this.radius = 100
+		this.radius = 100;
 		this.angle = Math.atan2(this.y, this.x);
 		this.lastDirectionChange = 0;
 		this.changeInterval = Math.random() * 750 + 250;
@@ -62,26 +62,28 @@ export class Enemy {
 		}
 	}
 
-
-
 	draw() {
 		if (!this.isAlive) return;
 		this.ctx.save();
 		this.ctx.translate(this.x, this.y);
-		this.ctx.rotate(this.angle)
+		this.ctx.rotate(this.angle);
 		this.ctx.drawImage(
 			this.image,
 			this.baseFrame.frame.x, // sx
 			this.baseFrame.frame.y, // sy
-			this.baseFrame.sourceSize.w, // sw
-			this.baseFrame.sourceSize.h, // sh
+			this.baseFrame.frame.w, // sw
+			this.baseFrame.frame.h, // sh
 			-this.width * this.baseFrame.pivot.x, // dx
 			-this.height * this.baseFrame.pivot.y, // dy
 			this.width, // dw
 			this.height // dh
 		);
-
 		this.ctx.restore();
+
+		this.ctx.beginPath();
+		this.ctx.fillStyle = "hsla(0, 100%, 50%, 0.2)";
+		this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+		this.ctx.fill();
 	}
 }
 
@@ -99,6 +101,10 @@ export class EnemyDrone extends Enemy {
 		this.xOffset = Math.cos(this.angle2);
 		this.yOffset = Math.sin(this.angle2);
 
+		this.radius = 20;
+		this.width = this.radius * 2;
+		this.height =
+			(this.baseFrame.frame.h * this.width) / this.baseFrame.frame.w;
 	}
 
 	update(elapsedTime) {
