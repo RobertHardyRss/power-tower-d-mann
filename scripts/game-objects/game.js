@@ -29,8 +29,13 @@ export class Game {
 		this.canvas.addEventListener("wheel", (e) => {
 			e.preventDefault();
 			const direction = e.deltaY > 0 ? 1 : -1;
+<<<<<<< Updated upstream
 			this.scale += 0.2 * direction;
 			this.scale = Math.min(Math.max(0.25, this.scale), 3);
+=======
+			this.scale += 0.1 * direction;
+			this.scale = Math.min(Math.max(0.60, this.scale), 3);
+>>>>>>> Stashed changes
 			//console.log("scale", this.scale, e.deltaY);
 		});
 

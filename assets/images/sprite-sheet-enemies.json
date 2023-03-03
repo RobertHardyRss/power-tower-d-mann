@@ -86,8 +86,13 @@
 	"frame": {"x":1372,"y":141,"w":230,"h":131},
 	"rotated": false,
 	"trimmed": true,
+<<<<<<< Updated upstream
 	"spriteSourceSize": {"x":7,"y":8,"w":230,"h":131},
 	"sourceSize": {"w":248,"h":147},
+=======
+	"spriteSourceSize": {"x":11,"y":6,"w":230,"h":133},
+	"sourceSize": {"w":238,"h":147},
+>>>>>>> Stashed changes
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
