@@ -21,7 +21,6 @@ let currentTime = 0;
  */
 function gameLoop(timestamp) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
 	starFieldBackground.update();
 	starFieldBackground.draw();
 

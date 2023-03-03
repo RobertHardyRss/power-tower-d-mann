@@ -5,7 +5,7 @@
 	"frame": {"x":631,"y":263,"w":459,"h":228},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":6,"y":1,"w":459,"h":228},
+	"spriteSourceSize": {"x":5,"y":1,"w":459,"h":228},
 	"sourceSize": {"w":470,"h":230},
 	"pivot": {"x":0.5,"y":0.5}
 },
@@ -14,13 +14,13 @@
 	"frame": {"x":457,"y":1,"w":372,"h":260},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":1,"y":1,"w":372,"h":260},
+	"spriteSourceSize": {"x":24,"y":1,"w":372,"h":260},
 	"sourceSize": {"w":397,"h":262},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "enemy-drone-1.png",
-	"frame": {"x":1407,"y":1,"w":271,"h":120},
+	"frame": {"x":1202,"y":1,"w":271,"h":120},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":8,"y":8,"w":271,"h":120},
@@ -29,10 +29,10 @@
 },
 {
 	"filename": "enemy-drone-2.png",
-	"frame": {"x":831,"y":1,"w":369,"h":206},
+	"frame": {"x":831,"y":1,"w":369,"h":215},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":20,"y":16,"w":369,"h":206},
+	"spriteSourceSize": {"x":10,"y":7,"w":369,"h":215},
 	"sourceSize": {"w":399,"h":238},
 	"pivot": {"x":0.5,"y":0.5}
 },
@@ -41,7 +41,7 @@
 	"frame": {"x":303,"y":325,"w":326,"h":161},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":6,"y":10,"w":326,"h":161},
+	"spriteSourceSize": {"x":4,"y":10,"w":326,"h":161},
 	"sourceSize": {"w":336,"h":181},
 	"pivot": {"x":0.5,"y":0.5}
 },
@@ -50,16 +50,16 @@
 	"frame": {"x":1,"y":325,"w":300,"h":165},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":16,"y":8,"w":300,"h":165},
+	"spriteSourceSize": {"x":20,"y":8,"w":300,"h":165},
 	"sourceSize": {"w":336,"h":181},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "enemy-heavy-fighter-1.png",
-	"frame": {"x":1092,"y":372,"w":366,"h":139},
+	"frame": {"x":1372,"y":136,"w":366,"h":139},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":17,"y":5,"w":366,"h":139},
+	"spriteSourceSize": {"x":14,"y":5,"w":366,"h":139},
 	"sourceSize": {"w":397,"h":149},
 	"pivot": {"x":0.5,"y":0.5}
 },
@@ -68,26 +68,30 @@
 	"frame": {"x":1,"y":1,"w":454,"h":322},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":7,"y":13,"w":454,"h":322},
+	"spriteSourceSize": {"x":17,"y":13,"w":454,"h":322},
 	"sourceSize": {"w":478,"h":348},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "enemy-light-figther-1.png",
-	"frame": {"x":1460,"y":392,"w":170,"h":111},
+	"frame": {"x":1339,"y":381,"w":170,"h":112},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":5,"y":13,"w":170,"h":111},
+	"spriteSourceSize": {"x":8,"y":12,"w":170,"h":112},
 	"sourceSize": {"w":183,"h":137},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "enemy-light-figther-2.png",
-	"frame": {"x":1372,"y":141,"w":230,"h":131},
+	"frame": {"x":1511,"y":1,"w":230,"h":133},
 	"rotated": false,
 	"trimmed": true,
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 	"spriteSourceSize": {"x":7,"y":8,"w":230,"h":131},
+=======
+	"spriteSourceSize": {"x":11,"y":6,"w":230,"h":133},
+>>>>>>> 198598e6dd7a8f35ca22eac246fceab46b5128a5
 	"sourceSize": {"w":248,"h":147},
 =======
 	"spriteSourceSize": {"x":11,"y":6,"w":230,"h":133},
@@ -97,28 +101,28 @@
 },
 {
 	"filename": "enemy-light-figther-3.png",
-	"frame": {"x":1092,"y":209,"w":278,"h":161},
+	"frame": {"x":1092,"y":218,"w":278,"h":161},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":3,"y":6,"w":278,"h":161},
+	"spriteSourceSize": {"x":10,"y":6,"w":278,"h":161},
 	"sourceSize": {"w":291,"h":173},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "enemy-light-figther-4.png",
-	"frame": {"x":1202,"y":1,"w":203,"h":138},
+	"frame": {"x":1511,"y":277,"w":203,"h":138},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":4,"y":12,"w":203,"h":138},
+	"spriteSourceSize": {"x":9,"y":12,"w":203,"h":138},
 	"sourceSize": {"w":216,"h":162},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "enemy-scout.png",
-	"frame": {"x":1460,"y":274,"w":245,"h":116},
+	"frame": {"x":1092,"y":381,"w":245,"h":116},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":3,"y":0,"w":245,"h":116},
+	"spriteSourceSize": {"x":8,"y":0,"w":245,"h":116},
 	"sourceSize": {"w":256,"h":116},
 	"pivot": {"x":0.5,"y":0.5}
 }],
@@ -127,9 +131,9 @@
 	"version": "1.0",
 	"image": "sprite-sheet-enemies.png",
 	"format": "RGBA8888",
-	"size": {"w":1706,"h":512},
+	"size": {"w":1742,"h":498},
 	"scale": "1",
 	"related_multi_packs": [ "sprite-sheet-misc.json", "sprite-sheet-player.json" ],
-	"smartupdate": "$TexturePacker:SmartUpdate:640b697921b6d5f8324e9034d8740664:533b71398019b52fc9d937483d69ef43:d06cafd6834484422a401f10eb4b1f35$"
+	"smartupdate": "$TexturePacker:SmartUpdate:4f261f9ebd5ef4d136544b645b0cd3d2:dbfa0d86e4efe80f33dc026eab5cffe2:d06cafd6834484422a401f10eb4b1f35$"
 }
 }

@@ -38,4 +38,4 @@ class SpriteSheet {
 
 export const playerSpriteSheet = new SpriteSheet(playerSpriteData);
 
-export const enemySprite = enemySpriteData.frames;
+export const enemySprite = new SpriteSheet(enemySpriteData);

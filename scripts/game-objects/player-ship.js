@@ -94,8 +94,8 @@ export class PlayerShip {
 			this.image,
 			this.shipSpriteFrame.frame.x, // image starting x
 			this.shipSpriteFrame.frame.y, // image starting y
-			this.shipSpriteFrame.sourceSize.w, // image starting width
-			this.shipSpriteFrame.sourceSize.h, // image starting height
+			this.shipSpriteFrame.frame.w, // image starting width
+			this.shipSpriteFrame.frame.h, // image starting height
 			-this.width * this.shipSpriteFrame.pivot.x, // x to place image
 			-this.height * this.shipSpriteFrame.pivot.y, // y to place image
 			this.width, // placement width
