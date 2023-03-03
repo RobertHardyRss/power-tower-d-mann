@@ -13,21 +13,10 @@ export class Turret {
 		this.ctx = ctx;
 		this.color = "white";
 		this.angle = 0;
-<<<<<<< HEAD
 		this.rotateRate = 0.08
 		this.accuracy = 0.5
 		this.range = 200;
 		/**@type {Enemy[]} */
-=======
-		this.targetAngle = 0;
-		this.angleDiff = 0; // this is the difference between our target angle and current
-
-		this.rotationRate = 0.05;
-		this.angleTolerance = 0.1;
-
-		this.range = 300;
-		/** @type {Enemy[]} */
->>>>>>> 198598e6dd7a8f35ca22eac246fceab46b5128a5
 		this.targets = [];
 		/** @type { Enemy | null } */
 		this.target = null;
@@ -121,7 +110,6 @@ export class Turret {
 		this.ctx.save();
 		this.ctx.translate(this.x, this.y);
 		this.ctx.rotate(this.angle);
-<<<<<<< HEAD
 		this.ctx.beginPath();
 		this.ctx.moveTo(-10, 0);
 		this.ctx.lineTo(10, -5);
@@ -129,21 +117,6 @@ export class Turret {
 		this.ctx.lineTo(-10, 0);
 		this.ctx.fillStyle = this.color;
 		this.ctx.fill();
-=======
-
-		this.ctx.drawImage(
-			this.image,
-			this.turretSpriteFrame.frame.x, // sx
-			this.turretSpriteFrame.frame.y, // sy
-			this.turretSpriteFrame.frame.w, // sw
-			this.turretSpriteFrame.frame.h, // sh
-			-this.width * this.turretSpriteFrame.pivot.x, // dx
-			-this.height * this.turretSpriteFrame.pivot.y, // dy
-			this.width, // dw
-			this.height // dh
-		);
-
->>>>>>> 198598e6dd7a8f35ca22eac246fceab46b5128a5
 		this.ctx.restore();
 	}
 }
