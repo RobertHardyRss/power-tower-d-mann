@@ -2,6 +2,7 @@
 
 import { enemySprite } from "../utility/sprite-sheet.js";
 import { canvas } from "../utility/canvas.js";
+import { PlayerShip } from "./player-ship.js";
 
 export class Enemy {
 	/**
@@ -13,6 +14,11 @@ export class Enemy {
 		this.ctx = ctx;
 		this.x = x;
 		this.y = y;
+
+		this.angle2 = Math.atan2(this.y, this.x);
+		this.xOffset = Math.cos(this.angle2);
+		this.yOffset = Math.sin(this.angle2);
+
 		this.level = 1;
 		this.speed = 1;
 		this.health = 1;
@@ -48,6 +54,9 @@ export class Enemy {
 		this.color = hsl;
 	}
 
+	/**
+	 * @param {number} elapsedTime
+	 */
 	update(elapsedTime) {
 		this.lastDirectionChange += elapsedTime;
 		if (this.isAlive && this.health <= 0) {
@@ -85,6 +94,19 @@ export class Enemy {
 		this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
 		this.ctx.fill();
 	}
+
+	/**
+	 * @param {PlayerShip} player
+	 */
+	playerDamageCheck(player) {
+		// we need our collidable x, y coordinate
+		let x = this.x + this.radius * this.xOffset;
+		let y = this.y + this.radius * this.yOffset;
+
+		if(this.ctx.isPointInPath(player.shipPath, x, y)) {
+			// hit the player
+		}
+	}
 }
 
 export class EnemyDrone extends Enemy {
@@ -107,6 +129,9 @@ export class EnemyDrone extends Enemy {
 			(this.baseFrame.frame.h * this.width) / this.baseFrame.frame.w;
 	}
 
+	/**
+	 * @param {any} elapsedTime
+	 */
 	update(elapsedTime) {
 		this.x -= this.xOffset * this.speed;
 		this.y -= this.yOffset * this.speed;
