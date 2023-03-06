@@ -23,8 +23,6 @@ class BackGroundImage {
 	}
 
 	draw() {
-		this.ctx.save();
-		this.ctx.translate(0, 0);
 		this.ctx.drawImage(this.image, this.x, this.y);
 		this.ctx.drawImage(this.image, this.x + this.image.width, this.y);
 		this.ctx.drawImage(this.image, this.x + this.image.width * 2, this.y);
