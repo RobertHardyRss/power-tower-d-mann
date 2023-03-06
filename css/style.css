@@ -4,6 +4,11 @@
 	box-sizing: border-box;
 }
 
+body {
+	background-color: black;
+	color: black;
+}
+
 #game-canvas {
 	position: absolute;
 	top: 0;
@@ -14,4 +19,14 @@
 
 .asset {
 	display: none;
+}
+
+@font-face {
+	font-family: "kv-future";
+	src: url(../assets/ui/kenvector_future.ttf) format("truetype");
+}
+
+@font-face {
+	font-family: "kv-future-thin";
+	src: url(../assets/ui/kenvector_future_thin.ttf) format("truetype");
 }
