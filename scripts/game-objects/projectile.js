@@ -1,4 +1,5 @@
 //@ts-check
+import { miscSprite } from "../utility/sprite-sheet.js";
 
 export class Projectile {
 	/**
@@ -12,7 +13,7 @@ export class Projectile {
 		this.ctx = ctx;
 		this.distance = range;
 		this.damage = 20;
-
+		this.angle = angle
 		this.distanceTraveled = 0;
 
 		this.xOffset = Math.cos(angle);
@@ -22,6 +23,11 @@ export class Projectile {
 		this.y = sy;
 		this.isVisible = true;
 		this.speed = 5;
+		this.width = 15
+		this.height = 10
+		this.image2 = miscSprite.image
+		this.mSprites = miscSprite
+		this.Sprite =  this.mSprites.getFrame("projectile.png");
 	}
 
 	update(elapsedTime) {
@@ -38,10 +44,20 @@ export class Projectile {
 		if (!this.isVisible) return;
 
 		this.ctx.save();
-		this.ctx.beginPath();
-		this.ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-		this.ctx.fillStyle = "red";
-		this.ctx.fill();
+		this.ctx.translate(this.x,this.y)
+		this.ctx.rotate(this.angle)
+		this.ctx.drawImage(
+			this.image2,
+			this.Sprite.frame.x,
+			this.Sprite.frame.y,
+			this.Sprite.frame.w,
+			this.Sprite.frame.h,
+			-this.width * this.Sprite.pivot.x, // dx
+			-this.height * this.Sprite.pivot.y, // dy
+			this.width,
+			this.height,
+		)
 		this.ctx.restore();
+
 	}
 }
