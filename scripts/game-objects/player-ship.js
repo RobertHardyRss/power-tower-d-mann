@@ -2,6 +2,7 @@
 
 import { playerSpriteSheet } from "../utility/sprite-sheet.js";
 import { MainTurretAlt, MainTurret, PointDefenseTurret } from "./turret.js";
+import { miscSprite } from "../utility/sprite-sheet.js";
 
 export class PlayerShip {
 	/**
@@ -36,6 +37,14 @@ export class PlayerShip {
 		this.height = 131;
 		this.image = playerSpriteSheet.image;
 		this.shipSpriteFrame = sprites.getFrame("main-ship");
+		this.image2 = miscSprite.image
+		this.mSprites = miscSprite
+		this.timagnum1 = 1
+		this.timagnum2 = 1
+		this.thrusterSprite1 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum1)+".png");
+		this.thrusterSprite2 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum2)+".png");
+		this.time1 = 5
+		this.time2 = 5
 	}
 
 	getShipPath() {
@@ -79,6 +88,30 @@ export class PlayerShip {
 		this.turrets.forEach((t) => {
 			t.update(elapsedTime);
 		});
+		this.time1 --
+		this.time2 --
+		if(this.time1 < 0) {
+			if (this.timagnum1 > 1){
+				this.timagnum1 --
+				this.thrusterSprite1 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum1)+".png");
+			}
+			else{
+				this.timagnum1 = 4
+				this.thrusterSprite1 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum1)+".png");
+			}
+			this.time1 = 5
+		}
+		if(this.time2 < 0) {
+			if (this.timagnum2 >1){
+				this.timagnum2 --
+				this.thrusterSprite2 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum2)+".png");
+			}
+			else{
+				this.timagnum2 = 4
+				this.thrusterSprite2 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum2)+".png");
+			}
+			this.time2 = 5
+		}
 	}
 
 	draw() {
@@ -102,6 +135,32 @@ export class PlayerShip {
 			this.height // placement height
 		);
 		this.ctx.restore();
+		this.ctx.save()
+		this.ctx.drawImage(
+			this.image2,
+			this.thrusterSprite1.frame.x,
+			this.thrusterSprite1.frame.y,
+			this.thrusterSprite1.frame.w,
+			this.thrusterSprite1.frame.h,
+			-210,
+			-34,
+			75,
+			50,
+		)
+		this.ctx.restore()
+		this.ctx.save()
+		this.ctx.drawImage(
+			this.image2,
+			this.thrusterSprite2.frame.x,
+			this.thrusterSprite2.frame.y,
+			this.thrusterSprite2.frame.w,
+			this.thrusterSprite2.frame.h,
+			-210,
+			-17,
+			75,
+			50,
+		)
+		this.ctx.restore()
 
 		this.turrets.forEach((t) => {
 			t.draw();
