@@ -1,7 +1,7 @@
 //@ts-check
 import uiSpriteData from "../../assets/ui/sprite-sheet.json" assert { type: "json" };
 import { canvas } from "../utility/canvas.js";
-import { EVENTS } from "../utility/events.js";
+import { EVENTS, TurretUpgradeEvent } from "../utility/events.js";
 import { Turret } from "./turret.js";
 
 class UiSpriteSheet {
@@ -201,6 +201,13 @@ export class TurretUpgradePanel {
 
 	handleMouseClick() {
 		if (!this.isFocus || this.upgradeHoverIndex === -1) return;
+
+		const upgradeEvent = new CustomEvent(EVENTS.upgrade, {
+			detail: new TurretUpgradeEvent(this.name, this.turret.upgrades[this.upgradeHoverIndex].description),
+		});
+
+		document.dispatchEvent(upgradeEvent);
+
 		console.log("clicked", this.turret.upgrades[this.upgradeHoverIndex]);
 	}
 
