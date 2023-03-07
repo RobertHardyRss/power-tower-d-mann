@@ -4,6 +4,7 @@ import { ENEMY_SPAWN_POINTS } from "../utility/constants.js";
 import { EVENTS, ToggleUpgradeUiEvent } from "../utility/events.js";
 import { starFieldBackground } from "./background.js";
 import { Enemy, EnemyDrone } from "./enemy.js";
+import { Explosion } from "./explosion.js";
 import { PlayerShip } from "./player-ship.js";
 import { Projectile } from "./projectile.js";
 
@@ -25,6 +26,8 @@ export class Game {
 		this.playerShip = new PlayerShip(this.ctx);
 		this.showUpgradeGui = false;
 		this.isGamePaused = false;
+		/** @type { Explosion[] } */
+		this.explosions = []
 
 		/** @type { Enemy[] } */
 		this.enemies = [];
@@ -56,6 +59,9 @@ export class Game {
 			e.update(elapsedTime);
 		});
 
+		this.explosions.forEach((e) => {
+			e.update(elapsedTime);
+		})
 		this.playerShip.update(elapsedTime);
 
 		this.projectiles = [];
@@ -85,8 +91,13 @@ export class Game {
 		}
 
 		this.ctx.restore();
-
+		this.enemies.forEach((e) => {
+			if (!e.isAlive) {
+				this.explosions.push(new Explosion(e.x,e.y,Math.random()*360,200,this.ctx))
+			}
+		})
 		this.enemies = this.enemies.filter((e) => e.isAlive);
+		this.explosions = this.explosions.filter((e) => !e.done)
 	}
 
 	draw() {
@@ -102,6 +113,9 @@ export class Game {
 		this.enemies.forEach((e) => {
 			e.draw();
 		});
+		this.explosions.forEach((e) => {
+			e.draw();
+		});
 		this.ctx.restore();
 	}
 
@@ -113,7 +127,7 @@ export class Game {
 			// change the scaling factor based on whether we are zooming in or out
 			const direction = e.deltaY > 0 ? 1 : -1;
 			this.scale += 0.1 * direction;
-			this.scale = Math.min(Math.max(0.25, this.scale), 2);
+			this.scale = Math.min(Math.max(0.5, this.scale), 2);
 			//console.log("scale", this.scale, e.deltaY);
 		});
 

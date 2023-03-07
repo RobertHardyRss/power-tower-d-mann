@@ -3,6 +3,7 @@
 import { enemySprite } from "../utility/sprite-sheet.js";
 import { canvas, normalizePoint } from "../utility/canvas.js";
 import { PlayerShip } from "./player-ship.js";
+import { Explosion } from "./explosion.js";
 
 export class Enemy {
 	/**
