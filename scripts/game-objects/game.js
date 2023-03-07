@@ -7,6 +7,7 @@ import { Enemy, EnemyDrone } from "./enemy.js";
 import { Explosion } from "./explosion.js";
 import { PlayerShip } from "./player-ship.js";
 import { Projectile } from "./projectile.js";
+import { TurretUpgradePanel } from "./user-interface.js";
 
 export class Game {
 	/**
@@ -42,6 +43,13 @@ export class Game {
 			difficultyLevelTimer: 0,
 			difficultyLevelInterval: 30000,
 		};
+
+		/** @type {TurretUpgradePanel[]} */
+		this.upgradePanels = [];
+
+		this.playerShip.turrets.forEach((t) => {
+			this.upgradePanels.push(new TurretUpgradePanel(this.ctx, t));
+		});
 
 		this.wireUpEventListeners();
 	}
@@ -117,6 +125,12 @@ export class Game {
 			e.draw();
 		});
 		this.ctx.restore();
+
+		if (this.showUpgradeGui) {
+			this.upgradePanels.forEach((p) => {
+				p.draw();
+			});
+		}
 	}
 
 	wireUpEventListeners() {
