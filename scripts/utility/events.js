@@ -7,6 +7,7 @@ export const EVENTS = {
 	playerDamage: "td-player-damage",
 	playerDeath: "td-player-death",
 	toggleUpgradeUi: "td-toggle-upgrade",
+	creditChange: "td-credit-change",
 };
 
 export class TurretUpgradeEvent {
@@ -26,5 +27,14 @@ export class ToggleUpgradeUiEvent {
 	 */
 	constructor(show) {
 		this.show = show;
+	}
+}
+
+export class CreditChangedEvent {
+	/**
+	 * @param {number} amount
+	 */
+	constructor(amount) {
+		this.amount = amount;
 	}
 }

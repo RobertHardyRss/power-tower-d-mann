@@ -1,6 +1,5 @@
 //@ts-check
 import { Game } from "./game-objects/game.js";
-import { panels } from "./game-objects/user-interface.js";
 import { ctx, canvas } from "./utility/canvas.js";
 
 let game = new Game(ctx, canvas);
