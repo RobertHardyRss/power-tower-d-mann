@@ -40,11 +40,11 @@ export class PlayerShip {
 		this.image2 = miscSprite.image
 		this.mSprites = miscSprite
 		this.timagnum1 = 1
-		this.timagnum2 = 1
+		this.timagnum2 = 3
 		this.thrusterSprite1 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum1)+".png");
 		this.thrusterSprite2 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum2)+".png");
 		this.time1 = 5
-		this.time2 = 5
+		this.time2 = 4
 	}
 
 	getShipPath() {
