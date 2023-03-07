@@ -93,7 +93,7 @@ export class Game {
 		this.ctx.restore();
 		this.enemies.forEach((e) => {
 			if (!e.isAlive) {
-				this.explosions.push(new Explosion(e.x,e.y,Math.random()*360,200,this.ctx))
+				this.explosions.push(new Explosion(e.x,e.y,200,this.ctx))
 			}
 		})
 		this.enemies = this.enemies.filter((e) => e.isAlive);

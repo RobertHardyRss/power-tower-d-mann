@@ -5,15 +5,14 @@ export class Explosion {
 	/**
 	 * @param {Number} x
 	 * @param {Number} y
-	 * @param {Number} c
 	 * @param {Number} p
 	 * @param {CanvasRenderingContext2D} ctx
 	 */
-	constructor(x, y, c, p, ctx) {
+	constructor(x, y, p, ctx) {
 		this.x = x;
 		this.y = y;
 		this.ctx = ctx;
-		this.color = c;
+		this.color = 20;
 		this.particlCount = p;
 		this.particles = [];
 		this.size = 3;
@@ -35,6 +34,7 @@ export class Explosion {
                 l: Math.random() * 100 + 10,
                 xdel: Math.cos(angle) * sp,
                 ydel: Math.sin(angle) * sp,
+				light: Math.random()* 75
 			};
             this.particles.push(particle)
 		}
@@ -55,7 +55,7 @@ export class Explosion {
 	draw() {
 		this.particles.forEach((p) => {
             this.ctx.save();
-			this.ctx.fillStyle = `hsla(${p.c}, 100%, 50%, 1)`;
+			this.ctx.fillStyle = `hsla(${p.c}, 100%, ${p.light}%, 1)`;
 			this.ctx.fillRect(p.x, p.y, p.s, p.s);
 			ctx.restore();
 		});
