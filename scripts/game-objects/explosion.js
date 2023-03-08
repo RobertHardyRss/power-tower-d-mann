@@ -13,16 +13,16 @@ export class Explosion {
 		this.y = y;
 		this.ctx = ctx;
 		this.color = Math.random() * 40;
-		this.particlCount = p;
+		this.particleCount = p;
 		this.particles = [];
 		this.size = 3;
 		this.speed = 1;
         this.done = false
-        this.getPart(this.particlCount)
+        this.getParticles(this.particleCount)
 	}
 
-    getPart(p) {
-        for (let i = 0; i < this.particlCount; i++) {
+    getParticles(p) {
+        for (let i = 0; i < this.particleCount; i++) {
 			let thing = Math.random() * 30 - 15;
             let angle = Math.random() * Math.PI * 2;
             let sp = Math.random()*this.speed;
@@ -44,8 +44,9 @@ export class Explosion {
 		this.particles.forEach((p) => {
 			p.x += p.xdel
 			p.y += p.ydel
-            p.l --
+            p.l--
 		});
+		
         if(this.particles.length <= 0) {
             this.done = true
         }

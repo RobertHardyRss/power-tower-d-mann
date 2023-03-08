@@ -8,7 +8,7 @@ const SPAWN_RADIUS = 1200;
  */
 export const ENEMY_SPAWN_POINTS = [];
 
-for (let angle = 0; angle < CIRCLE; angle += CIRCLE / 12) {
+for (let angle = 0; angle < CIRCLE; angle += CIRCLE / 36) {
 	ENEMY_SPAWN_POINTS.push({
 		x: Math.floor(Math.cos(angle) * SPAWN_RADIUS),
 		y: Math.floor(Math.sin(angle) * SPAWN_RADIUS),
@@ -20,13 +20,14 @@ export const TURRET_UPGRADES = {
 	rateOfFire: "Rate of Fire",
 	damage: "Damage",
 	targetingSpeed: "Targeting Speed",
-	health: "Health",
+	// remove health upgrade at turret level for now
+	//health: "Health",
 };
 
 export const TURRET_UPGRADE_BASE_COST = {
+	damage: 2,
+	health: 2,
 	range: 2,
 	rateOfFire: 2,
-	damage: 2,
 	targetingSpeed: 2,
-	health: 2,
 };
