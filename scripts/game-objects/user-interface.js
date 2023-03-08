@@ -125,7 +125,7 @@ export class TurretUpgradePanel {
 		const yPadding = 50;
 
 		const isOnLeft = this.turret.x < 0;
-		const isOnTop = this.turret.y > 0;
+		const isOnTop = this.turret.y < 0;
 
 		if (this.turret.y == 0) {
 			return new Panel(
@@ -156,6 +156,7 @@ export class TurretUpgradePanel {
 			this.upgradeHoverCoords.push(i);
 		}
 	}
+
 	/**
 	 * @param {CustomEvent} event
 	 */
@@ -167,7 +168,7 @@ export class TurretUpgradePanel {
 	 * @param {CustomEvent} event
 	 */
 	handleCreditChanged(event) {
-		this.totalCredits += event.detail.amount;
+		this.totalCredits += event.detail;
 	}
 
 	/**
@@ -193,6 +194,11 @@ export class TurretUpgradePanel {
 			for (let i = this.upgradeHoverCoords.length - 1; i >= 0; i--) {
 				if (this.upgradeHoverCoords[i] < y) {
 					this.upgradeHoverIndex = i;
+					if (this.turret.upgrades[i].costToUpgrade() > this.totalCredits) {
+						// if we can't afford the upgrade, reset the hover
+						// index so we can't click it
+						this.upgradeHoverIndex = -1;
+					}
 					break;
 				}
 			}
@@ -201,12 +207,20 @@ export class TurretUpgradePanel {
 
 	handleMouseClick() {
 		if (!this.isFocus || this.upgradeHoverIndex === -1) return;
+		const cost = this.turret.upgrades[this.upgradeHoverIndex].costToUpgrade();
+
+		if (cost > this.totalCredits) return;
 
 		const upgradeEvent = new CustomEvent(EVENTS.upgrade, {
 			detail: new TurretUpgradeEvent(this.name, this.turret.upgrades[this.upgradeHoverIndex].description),
 		});
 
+		const creditChangeEvent = new CustomEvent(EVENTS.creditChange, {
+			detail: -cost,
+		});
+
 		document.dispatchEvent(upgradeEvent);
+		document.dispatchEvent(creditChangeEvent);
 
 		console.log("clicked", this.turret.upgrades[this.upgradeHoverIndex]);
 	}
@@ -235,18 +249,85 @@ export class TurretUpgradePanel {
 		this.ctx.font = `${this.text.upgradeFontSize}px kv-future-thin`;
 		textY += this.text.nameFontSize + this.text.padTop;
 		this.turret.upgrades.forEach((u, i) => {
-			if (i === this.upgradeHoverIndex) {
+			const cost = u.costToUpgrade();
+			this.ctx.fillStyle = "black";
+
+			if (cost > this.totalCredits) {
+				this.ctx.fillStyle = "rgba(0,0,0,0.3)";
+			} else if (i === this.upgradeHoverIndex) {
 				this.ctx.fillStyle = "white";
-			} else {
-				this.ctx.fillStyle = "black";
 			}
 
 			this.ctx.textAlign = "left";
 			this.ctx.fillText(u.description, textX, textY);
 			this.ctx.textAlign = "right";
-			this.ctx.fillText(`${u.costToUpgrade()} CR`, textX + (this.panel.w - this.text.padLeft * 2), textY);
+			this.ctx.fillText(`${cost} CR`, textX + (this.panel.w - this.text.padLeft * 2), textY);
 			textY += this.text.upgradeFontSize + this.text.padTop;
 		});
+		this.ctx.restore();
+	}
+}
+
+export class PlayerStatsPanel {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {number} credits
+	 * @param {number} health
+	 */
+	constructor(ctx, credits, health) {
+		this.ctx = ctx;
+		this.credits = credits;
+		this.health = health;
+
+		this.text = {
+			fontSize: 30,
+			padLeft: 10,
+			padTop: 12,
+			panelPadTop: 20,
+		};
+
+		this.width = 300;
+		this.height = this.text.padTop * 2 + this.text.fontSize;
+
+		this.x = canvas.width / 2 - this.width / 2;
+		this.y = 50;
+
+		this.wireUpEvents();
+	}
+
+	/**
+	 * @param {CustomEvent} event
+	 */
+	handleCreditChanged(event) {
+		this.credits += event.detail;
+	}
+
+	/**
+	 * @param {CustomEvent} event
+	 */
+	handleHealthChanged(event) {
+		this.health += event.detail;
+	}
+
+	wireUpEvents() {
+		document.addEventListener(EVENTS.creditChange, this.handleCreditChanged.bind(this));
+		document.addEventListener(EVENTS.playerHealthChange, this.handleHealthChanged.bind(this));
+	}
+
+	update() {}
+
+	draw() {
+		const textX = this.x + this.width / 2;
+		let textY = this.y + this.text.panelPadTop;
+
+		const text = `HP: ${this.health}   CR: ${this.credits}`;
+
+		this.ctx.save();
+		this.ctx.textAlign = "center";
+		this.ctx.font = `${this.text.fontSize}px kv-future`;
+		this.ctx.fillStyle = "rgba(128, 128, 128, 0.8)";
+
+		this.ctx.fillText(text, textX, textY);
 		this.ctx.restore();
 	}
 }

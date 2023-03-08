@@ -335,8 +335,9 @@ export class PointDefenseTurret extends Turret {
 
 		// upgradeable stats
 		this.rotationRate = 0.05;
-		this.range = 75;
-		this.rateOfFire = 250; // milliseconds
+		this.angleTolerance = 0.5;
+		this.range = 100;
+		this.rateOfFire = 125; // milliseconds
 		this.projectileDamage = 1;
 		this.health = 100;
 	}

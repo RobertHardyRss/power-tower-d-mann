@@ -4,7 +4,7 @@ export const EVENTS = {
 	upgrade: "td-upgrade",
 	upgradeComplete: "td-upgraded",
 	enemyDeath: "td-enemy-death",
-	playerDamage: "td-player-damage",
+	playerHealthChange: "td-player-health",
 	playerDeath: "td-player-death",
 	toggleUpgradeUi: "td-toggle-upgrade",
 	creditChange: "td-credit-change",

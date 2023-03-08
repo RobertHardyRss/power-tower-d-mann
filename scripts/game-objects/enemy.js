@@ -4,6 +4,7 @@ import { enemySprite } from "../utility/sprite-sheet.js";
 import { canvas, normalizePoint } from "../utility/canvas.js";
 import { PlayerShip } from "./player-ship.js";
 import { Explosion } from "./explosion.js";
+import { EVENTS } from "../utility/events.js";
 
 export class Enemy {
 	/**
@@ -25,6 +26,8 @@ export class Enemy {
 		this.speed = 1;
 		this.health = 1;
 		this.isAlive = true;
+		this.bountyAmount = 1;
+		this.baseDamage = 1;
 
 		this.width = 200;
 		this.height = 150;
@@ -57,6 +60,7 @@ export class Enemy {
 	update(elapsedTime) {
 		if (this.isAlive && this.health <= 0) {
 			this.isAlive = false;
+			document.dispatchEvent(new CustomEvent(EVENTS.creditChange, { detail: this.bountyAmount }));
 		}
 
 		if (!this.isAlive) return;
@@ -108,13 +112,12 @@ export class Enemy {
 	/**
 	 * @param {PlayerShip} player
 	 */
-	playerDamageCheck(player) {
-		// we need our collidable x, y coordinate
-		// let x = this.x + this.radius * this.xOffset;
-		// let y = this.y + this.radius * this.yOffset;
-		// if (this.ctx.isPointInPath(player.shipPath, x, y)) {
-		// 	// hit the player
-		// }
+	playerCollisionCheck(player) {
+		if (this.ctx.isPointInPath(player.shipPath, this.x, this.y)) {
+			// hit the player
+			this.health = 0;
+			document.dispatchEvent(new CustomEvent(EVENTS.playerHealthChange, { detail: -this.baseDamage }));
+		}
 	}
 }
 
@@ -128,8 +131,9 @@ export class EnemyDrone extends Enemy {
 	constructor(ctx, x, y, level = 1) {
 		super(ctx, x, y, level);
 
-		this.speed = Math.min(10, level);
+		this.speed = Math.min(3, level);
 		this.health = Math.min(10, level);
+		this.bountyAmount = this.health;
 
 		this.spriteFrame = this.spriteData.getFrame(this.getFrameName());
 

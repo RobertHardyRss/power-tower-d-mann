@@ -7,7 +7,7 @@ import { Enemy, EnemyDrone } from "./enemy.js";
 import { Explosion } from "./explosion.js";
 import { PlayerShip } from "./player-ship.js";
 import { Projectile } from "./projectile.js";
-import { TurretUpgradePanel } from "./user-interface.js";
+import { PlayerStatsPanel, TurretUpgradePanel } from "./user-interface.js";
 
 export class Game {
 	/**
@@ -20,6 +20,7 @@ export class Game {
 
 		this.player = {
 			health: 100,
+			maxHealth: 100,
 			credits: 0,
 		};
 
@@ -28,7 +29,7 @@ export class Game {
 		this.showUpgradeGui = false;
 		this.isGamePaused = false;
 		/** @type { Explosion[] } */
-		this.explosions = []
+		this.explosions = [];
 
 		/** @type { Enemy[] } */
 		this.enemies = [];
@@ -51,6 +52,7 @@ export class Game {
 			this.upgradePanels.push(new TurretUpgradePanel(this.ctx, t));
 		});
 
+		this.playerStatsPanel = new PlayerStatsPanel(this.ctx, this.player.credits, this.player.health);
 		this.wireUpEventListeners();
 	}
 
@@ -64,12 +66,13 @@ export class Game {
 		this.spawnEnemy(elapsedTime);
 
 		this.enemies.forEach((e) => {
+			e.playerCollisionCheck(this.playerShip);
 			e.update(elapsedTime);
 		});
 
 		this.explosions.forEach((e) => {
 			e.update(elapsedTime);
-		})
+		});
 		this.playerShip.update(elapsedTime);
 
 		this.projectiles = [];
@@ -101,11 +104,11 @@ export class Game {
 		this.ctx.restore();
 		this.enemies.forEach((e) => {
 			if (!e.isAlive) {
-				this.explosions.push(new Explosion(e.x,e.y,200,this.ctx))
+				this.explosions.push(new Explosion(e.x, e.y, 200, this.ctx));
 			}
-		})
+		});
 		this.enemies = this.enemies.filter((e) => e.isAlive);
-		this.explosions = this.explosions.filter((e) => !e.done)
+		this.explosions = this.explosions.filter((e) => !e.done);
 	}
 
 	draw() {
@@ -126,10 +129,24 @@ export class Game {
 		});
 		this.ctx.restore();
 
+		this.playerStatsPanel.draw();
+
 		if (this.showUpgradeGui) {
 			this.upgradePanels.forEach((p) => {
 				p.draw();
 			});
+		}
+	}
+
+	/**
+	 * @param {CustomEvent} event
+	 */
+	handleHealthChange(event) {
+		this.player.health += event.detail;
+		// don't go over max health
+		this.player.health = Math.min(this.player.maxHealth, this.player.health);
+		if (this.player.health <= 0) {
+			document.dispatchEvent(new Event(EVENTS.playerDeath));
 		}
 	}
 
@@ -172,6 +189,8 @@ export class Game {
 					break;
 			}
 		});
+
+		document.addEventListener(EVENTS.playerHealthChange, this.handleHealthChange.bind(this));
 	}
 
 	/**
@@ -187,6 +206,7 @@ export class Game {
 		if (increaseDifficulty) {
 			this.difficultyLevel++;
 			this.timers.difficultyLevelTimer = 0;
+			this.timers.enemySpawnInterval = Math.max(100, this.timers.enemySpawnInterval - 100);
 		}
 
 		if (!spawnEnemy) return;
