@@ -28,7 +28,7 @@ export class Game {
 		this.showUpgradeGui = false;
 		this.isGamePaused = false;
 		/** @type { Explosion[] } */
-		this.explosions = []
+		this.explosions = [];
 
 		/** @type { Enemy[] } */
 		this.enemies = [];
@@ -69,7 +69,7 @@ export class Game {
 
 		this.explosions.forEach((e) => {
 			e.update(elapsedTime);
-		})
+		});
 		this.playerShip.update(elapsedTime);
 
 		this.projectiles = [];
@@ -101,11 +101,11 @@ export class Game {
 		this.ctx.restore();
 		this.enemies.forEach((e) => {
 			if (!e.isAlive) {
-				this.explosions.push(new Explosion(e.x,e.y,200,this.ctx))
+				this.explosions.push(new Explosion(e.x, e.y, 100, this.ctx));
 			}
-		})
+		});
 		this.enemies = this.enemies.filter((e) => e.isAlive);
-		this.explosions = this.explosions.filter((e) => !e.done)
+		this.explosions = this.explosions.filter((e) => !e.done);
 	}
 
 	draw() {
