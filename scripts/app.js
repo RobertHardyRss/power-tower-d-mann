@@ -27,11 +27,14 @@ function gameLoop(timestamp) {
 window.requestAnimationFrame(gameLoop);
 
 document.addEventListener(EVENTS.playerHealthChange, (e) => {
+	//@ts-ignore e is a custom event
 	console.log(EVENTS.playerHealthChange, e.detail);
 });
 document.addEventListener(EVENTS.playerDeath, (e) => {
+	//@ts-ignore e is a custom event
 	console.log(EVENTS.playerDeath, e.detail);
 });
 document.addEventListener(EVENTS.creditChange, (e) => {
+	//@ts-ignore e is a custom event
 	console.log(EVENTS.creditChange, e.detail);
 });

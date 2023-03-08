@@ -20,7 +20,8 @@ export const TURRET_UPGRADES = {
 	rateOfFire: "Rate of Fire",
 	damage: "Damage",
 	targetingSpeed: "Targeting Speed",
-	health: "Health",
+	// remove health upgrade at turret level for now
+	//health: "Health",
 };
 
 export const TURRET_UPGRADE_BASE_COST = {

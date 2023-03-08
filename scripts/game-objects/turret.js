@@ -121,7 +121,8 @@ export class Turret {
 		/** @type {TurretUpgrade[]} */
 		this.upgrades = [
 			new TurretUpgradeDamage(this.upgradeDamage.bind(this)),
-			new TurretUpgradeHealth(this.upgradeHealth.bind(this)),
+			// remove health upgrade at turret level for now
+			//new TurretUpgradeHealth(this.upgradeHealth.bind(this)),
 			new TurretUpgradeRange(this.upgradeRange.bind(this)),
 			new TurretUpgradeRateOfFire(this.upgradeRateOfFire.bind(this)),
 			new TurretUpgradeTargetingSpeed(this.upgradeTargetingSpeed.bind(this)),
