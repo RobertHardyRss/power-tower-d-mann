@@ -12,7 +12,7 @@ export class Explosion {
 		this.x = x;
 		this.y = y;
 		this.ctx = ctx;
-		this.color = 20;
+		this.color = Math.random() * 40;
 		this.particlCount = p;
 		this.particles = [];
 		this.size = 3;
@@ -34,7 +34,7 @@ export class Explosion {
                 l: Math.random() * 100 + 10,
                 xdel: Math.cos(angle) * sp,
                 ydel: Math.sin(angle) * sp,
-				light: Math.random()* 75
+				light: Math.random()* 50
 			};
             this.particles.push(particle)
 		}
