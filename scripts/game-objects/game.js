@@ -3,7 +3,7 @@
 import { ENEMY_SPAWN_POINTS } from "../utility/constants.js";
 import { EVENTS, ToggleUpgradeUiEvent } from "../utility/events.js";
 import { starFieldBackground } from "./background.js";
-import { Enemy, EnemyDrone } from "./enemy.js";
+import { Enemy, EnemyDrone, CircleDrone } from "./enemy.js";
 import { Explosion } from "./explosion.js";
 import { PlayerShip } from "./player-ship.js";
 import { Projectile } from "./projectile.js";
@@ -230,7 +230,7 @@ export class Game {
 		switch (enemyType) {
 			// once we have more enemy types, we need to add more options
 			default:
-				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
 		}
 	}
 }
