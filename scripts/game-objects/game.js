@@ -36,6 +36,8 @@ export class Game {
 
 		/** @type { Enemy[] } */
 		this.enemies = [];
+		this.maxEnemies = 20;
+
 		/** @type { Projectile[] } */
 		this.projectiles = [];
 
@@ -232,7 +234,7 @@ export class Game {
 			this.timers.enemySpawnInterval = Math.max(100, this.timers.enemySpawnInterval - 100);
 		}
 
-		if (!spawnEnemy) return;
+		if (!spawnEnemy || this.enemies.length > this.maxEnemies) return;
 
 		this.timers.lastEnemySpawnTimer = 0;
 		this.enemies.push(this.getRandomEnemy());
