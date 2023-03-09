@@ -8,6 +8,7 @@ export const EVENTS = {
 	playerDeath: "td-player-death",
 	toggleUpgradeUi: "td-toggle-upgrade",
 	creditChange: "td-credit-change",
+	difficultyIncrease: "td-difficulty-increase",
 };
 
 export class TurretUpgradeEvent {

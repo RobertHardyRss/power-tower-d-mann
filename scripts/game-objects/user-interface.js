@@ -207,7 +207,11 @@ export class TurretUpgradePanel {
 
 	handleMouseClick() {
 		if (!this.isFocus || this.upgradeHoverIndex === -1) return;
-		const cost = this.turret.upgrades[this.upgradeHoverIndex].costToUpgrade();
+		const turret = this.turret.upgrades[this.upgradeHoverIndex];
+
+		if (turret.isMaxed()) return;
+
+		const cost = turret.costToUpgrade();
 
 		if (cost > this.totalCredits) return;
 
@@ -222,7 +226,7 @@ export class TurretUpgradePanel {
 		document.dispatchEvent(upgradeEvent);
 		document.dispatchEvent(creditChangeEvent);
 
-		console.log("clicked", this.turret.upgrades[this.upgradeHoverIndex]);
+		//console.log("clicked", this.turret.upgrades[this.upgradeHoverIndex]);
 	}
 
 	wireUpEvents() {
@@ -249,10 +253,14 @@ export class TurretUpgradePanel {
 		this.ctx.font = `${this.text.upgradeFontSize}px kv-future-thin`;
 		textY += this.text.nameFontSize + this.text.padTop;
 		this.turret.upgrades.forEach((u, i) => {
+			const isMaxed = u.isMaxed();
 			const cost = u.costToUpgrade();
 			this.ctx.fillStyle = "black";
+			let text = `${cost} CR`;
 
-			if (cost > this.totalCredits) {
+			if (isMaxed) {
+				text = "MAX";
+			} else if (cost > this.totalCredits) {
 				this.ctx.fillStyle = "rgba(0,0,0,0.3)";
 			} else if (i === this.upgradeHoverIndex) {
 				this.ctx.fillStyle = "white";
@@ -261,7 +269,7 @@ export class TurretUpgradePanel {
 			this.ctx.textAlign = "left";
 			this.ctx.fillText(u.description, textX, textY);
 			this.ctx.textAlign = "right";
-			this.ctx.fillText(`${cost} CR`, textX + (this.panel.w - this.text.padLeft * 2), textY);
+			this.ctx.fillText(text, textX + (this.panel.w - this.text.padLeft * 2), textY);
 			textY += this.text.upgradeFontSize + this.text.padTop;
 		});
 		this.ctx.restore();
@@ -328,6 +336,99 @@ export class PlayerStatsPanel {
 		this.ctx.fillStyle = "rgba(128, 128, 128, 0.8)";
 
 		this.ctx.fillText(text, textX, textY);
+		this.ctx.restore();
+	}
+}
+
+export class GameOverPanel {
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 */
+	constructor(ctx) {
+		this.ctx = ctx;
+
+		this.credits = 0;
+		this.enemyDeathTally = 0;
+		this.distanceTraveled = 0;
+
+		this.text = {
+			headFontSize: 50,
+			bodyFontSize: 20,
+			padLeft: 10,
+			padTop: 12,
+			panelPadTop: 20,
+		};
+
+		this.width = 600;
+		this.height = 300;
+
+		this.x = canvas.width / 2 - this.width / 2;
+		this.y = canvas.height / 2 - this.height / 2;
+
+		this.panel = new Panel(this.ctx, this.x, this.y, this.width, this.height, [50]);
+
+		this.wireUpEvents();
+	}
+
+	/**
+	 * @param {CustomEvent} event
+	 */
+	handleCreditChanged(event) {
+		const creditChange = event.detail;
+		if (creditChange < 0) return;
+		this.credits += creditChange;
+	}
+
+	handleEnemyDeath() {
+		this.enemyDeathTally++;
+	}
+
+	handleDifficultyIncrease() {
+		this.distanceTraveled++;
+	}
+
+	wireUpEvents() {
+		document.addEventListener(EVENTS.creditChange, this.handleCreditChanged.bind(this));
+		document.addEventListener(EVENTS.enemyDeath, this.handleEnemyDeath.bind(this));
+		document.addEventListener(EVENTS.difficultyIncrease, this.handleDifficultyIncrease.bind(this));
+	}
+
+	getScore() {
+		return this.credits + this.enemyDeathTally * 2 + this.distanceTraveled * 3;
+	}
+
+	draw() {
+		const textX = this.panel.x + this.width / 2;
+		let textY = this.panel.y + this.text.panelPadTop + this.text.headFontSize;
+
+		const text = "Game Over!";
+
+		this.ctx.save();
+		this.panel.draw();
+		this.ctx.textAlign = "center";
+		this.ctx.font = `${this.text.headFontSize}px kv-future`;
+		this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+
+		this.ctx.fillText(text, textX, textY);
+
+		this.ctx.font = `${this.text.bodyFontSize}px kv-future`;
+
+		textY += this.text.headFontSize + this.text.padTop;
+		this.ctx.fillText(`Enemies Destroyed: ${this.enemyDeathTally}`, textX, textY);
+
+		textY += this.text.bodyFontSize + this.text.padTop;
+		this.ctx.fillText(`Distance Traveled: ${this.distanceTraveled} Parsecs`, textX, textY);
+
+		textY += this.text.bodyFontSize + this.text.padTop;
+		this.ctx.fillText(`Credits Earned: ${this.credits} CR`, textX, textY);
+
+		textY += this.text.bodyFontSize + this.text.padTop;
+		this.ctx.fillText(`Total Score: ${this.getScore()}`, textX, textY);
+
+		this.ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+		textY += this.text.bodyFontSize + this.text.padTop;
+		this.ctx.fillText("Press Enter to Play Again!", textX, textY);
+
 		this.ctx.restore();
 	}
 }
