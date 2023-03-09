@@ -36,11 +36,14 @@ export class Enemy {
 		this.spriteData = enemySprite;
 		this.image = enemySprite.image;
 		this.spriteFrame = this.spriteData.getFrame("enemy-scout");
-		this.image2 = miscSprite.image
-		this.mSprites = miscSprite
-		this.framenum = 7
-		this.Sprite =  this.mSprites.getFrame("red/frame-0"+ String(this.framenum) +".png");
-		this.time1 = 5
+		this.animationImage = miscSprite.image;
+		this.animationSpriteData = miscSprite;
+		this.frameRate = 1000 / 12; // 12 fps
+		this.frameTime = 0;
+		this.exhaustSprites = this.animationSpriteData.getFrames("red/");
+		this.exhaustFrame = 0;
+		this.exhaustFrameCount = this.exhaustSprites.length;
+
 		/** @type {Path2D} */
 		this.hitBox = this.getShape();
 	}
@@ -65,19 +68,19 @@ export class Enemy {
 		if (this.isAlive && this.health <= 0) {
 			this.isAlive = false;
 			document.dispatchEvent(new CustomEvent(EVENTS.creditChange, { detail: this.bountyAmount }));
+			document.dispatchEvent(new Event(EVENTS.enemyDeath));
 		}
-		this.time1 --
-		if(this.time1 < 0) {
-			if (this.framenum > 1){
-				this.framenum --
-				this.Sprite =  this.mSprites.getFrame("red/frame-0"+ String(this.framenum) +".png");
+
+		this.frameTime += elapsedTime;
+
+		if (this.frameTime >= this.frameRate) {
+			this.frameTime = 0;
+			this.exhaustFrame++;
+			if (this.exhaustFrame === this.exhaustFrameCount) {
+				this.exhaustFrame = 0;
 			}
-			else{
-				this.framenum = 7
-				this.Sprite =  this.mSprites.getFrame("red/frame-0"+ String(this.framenum) +".png");
-			}
-			this.time1 = 5
 		}
+
 		if (!this.isAlive) return;
 	}
 
@@ -105,6 +108,19 @@ export class Enemy {
 		this.ctx.save();
 		this.ctx.translate(this.x, this.y);
 		this.ctx.rotate(this.angle);
+
+		this.ctx.drawImage(
+			this.animationImage,
+			this.exhaustSprites[this.exhaustFrame].frame.x, // sx
+			this.exhaustSprites[this.exhaustFrame].frame.y, // sy
+			this.exhaustSprites[this.exhaustFrame].frame.w, // sw
+			this.exhaustSprites[this.exhaustFrame].frame.h, // sh
+			this.width * 2 * this.exhaustSprites[this.exhaustFrame].pivot.x, // dx
+			-(this.height / 2) * this.exhaustSprites[this.exhaustFrame].pivot.y, // dy
+			this.width / 2, // dw
+			this.height / 2 // dh
+		);
+
 		this.ctx.drawImage(
 			this.image,
 			this.spriteFrame.frame.x, // sx
@@ -116,22 +132,7 @@ export class Enemy {
 			this.width, // dw
 			this.height // dh
 		);
-		this.ctx.restore();
-		this.ctx.save();
-		this.ctx.translate(this.x, this.y);
-		this.ctx.rotate(this.angle);
-		this.ctx.scale(-1,-1)
-		this.ctx.drawImage(
-			this.image2,
-			this.Sprite.frame.x, // sx
-			this.Sprite.frame.y, // sy
-			this.Sprite.frame.w, // sw
-			this.Sprite.frame.h, // sh
-			-this.width * this.Sprite.pivot.x-this.width/9, // dx
-			-this.height * this.Sprite.pivot.y+this.width/9, // dy
-			this.width/2, // dw
-			this.height/2 // dh
-		);
+
 		this.ctx.restore();
 	}
 

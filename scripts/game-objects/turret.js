@@ -281,7 +281,7 @@ export class Turret {
 		// Get the upgrade details from the event
 		const upgradeDetail = event.detail;
 
-		console.log("Turret received upgrade event", upgradeDetail);
+		//console.log("Turret received upgrade event", upgradeDetail);
 
 		// if the name from the event doesn't match my name, return.
 		if (upgradeDetail.name != this.name) return;

@@ -360,7 +360,7 @@
             <key type="filename">engine-exhaust/blue/frame-04.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.71875,0.5</point_f>
+                <point_f>0.234375,0.5</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -382,7 +382,7 @@
             <key type="filename">engine-exhaust/red/frame-08.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.8125,0.5</point_f>
+                <point_f>0.203125,0.5</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -404,7 +404,7 @@
             <key type="filename">engine-exhaust/yellow/frame-08.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.945055,0.5</point_f>
+                <point_f>0.043956,0.5</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -494,7 +494,7 @@
             <key type="filename">projectiles/projectile.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.178082</point_f>
+                <point_f>0.246575,0.5</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
