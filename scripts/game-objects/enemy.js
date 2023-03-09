@@ -212,7 +212,6 @@ export class CircleDrone extends Enemy {
 		this.angle = Math.atan2(this.targetx, this.targety);
 		this.spriteFrame = this.spriteData.getFrame(this.getFrameName());
 		this.gradientofRad = -1/((this.centerY-this.y)/(this.centerX-this.x))
-		//this.radius = 20;
 		this.width = 40;
 		this.height = (this.spriteFrame.frame.h * this.width) / this.spriteFrame.frame.w;
 		this.hitBox = this.getShape();

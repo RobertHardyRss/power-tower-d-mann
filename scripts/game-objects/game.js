@@ -229,34 +229,13 @@ export class Game {
 
 		switch (enemyType) {
 			case 1:
-				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
-			break
 			case 2:
-				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
-			break
 			case 3:
 				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
-			break
-			case 4:
-				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
-			break
-			case 5:
-				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
-			break
-			case 6:
-				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
-			break
-			case 7:
-				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
-			break
-			case 8:
-				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
-			break
-			case 9:
-				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
-			break
+				break;
 			default:
 				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+				break;
 		}
 	}
 }
