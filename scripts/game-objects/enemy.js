@@ -225,9 +225,9 @@ export class CircleDrone extends Enemy {
 			case 2:
 			case 3:
 			case 4:
-				return `enemy-drone-${this.level - 1}`;
+				return `enemy-light-figther-${this.level - 1}`;
 			default:
-				return "enemy-drone-4";
+				return "enemy-light-figther-4";
 		}
 	}
 
