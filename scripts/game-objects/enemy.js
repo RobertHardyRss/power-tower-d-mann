@@ -159,7 +159,8 @@ export class EnemyDrone extends Enemy {
 		super(ctx, x, y, level);
 
 		this.speed = Math.min(3, level);
-		this.health = Math.min(10, level);
+		this.health = Math.min(50, level * 2);
+		this.baseDamage = level;
 		this.bountyAmount = this.health;
 
 		this.spriteFrame = this.spriteData.getFrame(this.getFrameName());
@@ -198,21 +199,20 @@ export class EnemyDrone extends Enemy {
 
 export class CircleDrone extends Enemy {
 	constructor(ctx, x, y, level = 1) {
-		super(ctx,x,y,level)
-		this.centerX = -this.xOffset
-		this.centerY = -this.yOffset
-		this.radius = 1200
-		this.targetx = this.centerX + this.radius * Math.cos(this.x)
-		this.targety = this.centerY + this.radius * Math.sin(this.y)
-		this.num = Math.random() * 360
-		this.x = this.radius*(Math.cos(this.num)), 
-		this.y = this.radius*(Math.sin(this.num))
+		super(ctx, x, y, level);
+		this.centerX = -this.xOffset;
+		this.centerY = -this.yOffset;
+		this.radius = 1200;
+		this.targetx = this.centerX + this.radius * Math.cos(this.x);
+		this.targety = this.centerY + this.radius * Math.sin(this.y);
+		this.num = Math.random() * 360;
+		(this.x = this.radius * Math.cos(this.num)), (this.y = this.radius * Math.sin(this.num));
 		this.speed = Math.min(3, level);
 		this.health = Math.min(10, level);
 		this.bountyAmount = this.health;
 		this.angle = Math.atan2(this.targetx, this.targety);
 		this.spriteFrame = this.spriteData.getFrame(this.getFrameName());
-		this.gradientofRad = -1/((this.centerY-this.y)/(this.centerX-this.x))
+		this.gradientofRad = -1 / ((this.centerY - this.y) / (this.centerX - this.x));
 		//this.radius = 20;
 		this.width = 40;
 		this.height = (this.spriteFrame.frame.h * this.width) / this.spriteFrame.frame.w;
@@ -238,11 +238,11 @@ export class CircleDrone extends Enemy {
 	update(elapsedTime) {
 		super.update(elapsedTime);
 		if (!this.isAlive) return;
-		if(this.num < 360)this.num += this.speed/300
-		else this.num = 0
-		this.radius -= this.speed/2
-		this.x = this.centerX + this.radius * Math.cos(this.num)
-		this.y = this.centerY + this.radius * Math.sin(this.num)
-		this.angle = this.num-1.5
+		if (this.num < 360) this.num += this.speed / 360;
+		else this.num = 0;
+		this.radius -= this.speed / 2;
+		this.x = this.centerX + this.radius * Math.cos(this.num);
+		this.y = this.centerY + this.radius * Math.sin(this.num);
+		this.angle = this.num - 1.4;
 	}
 }

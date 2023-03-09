@@ -47,7 +47,7 @@ export class Game {
 			enemySpawnInterval: 2000,
 
 			difficultyLevelTimer: 0,
-			difficultyLevelInterval: 30000,
+			difficultyLevelInterval: 15000,
 		};
 
 		/** @type {TurretUpgradePanel[]} */

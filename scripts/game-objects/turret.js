@@ -359,7 +359,7 @@ export class MainTurret extends Turret {
 		this.rotationRate = 0.02;
 		this.range = 200;
 		this.rateOfFire = 500; // milliseconds
-		this.projectileDamage = 50;
+		this.projectileDamage = 20;
 		this.health = 500;
 
 		this.angle = angle;
