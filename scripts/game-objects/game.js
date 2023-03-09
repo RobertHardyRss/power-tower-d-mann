@@ -228,9 +228,35 @@ export class Game {
 		const spawnLocation = ENEMY_SPAWN_POINTS[Math.floor(Math.random() * ENEMY_SPAWN_POINTS.length)];
 
 		switch (enemyType) {
-			// once we have more enemy types, we need to add more options
-			default:
+			case 1:
 				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+			break
+			case 2:
+				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+			break
+			case 3:
+				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+			break
+			case 4:
+				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+			break
+			case 5:
+				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+			break
+			case 6:
+				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+			break
+			case 7:
+				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+			break
+			case 8:
+				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+			break
+			case 9:
+				return new CircleDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
+			break
+			default:
+				return new EnemyDrone(this.ctx, spawnLocation.x, spawnLocation.y, enemyLevel);
 		}
 	}
 }

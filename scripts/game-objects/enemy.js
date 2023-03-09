@@ -242,6 +242,6 @@ export class CircleDrone extends Enemy {
 		this.radius -= this.speed/2
 		this.x = this.centerX + this.radius * Math.cos(this.num)
 		this.y = this.centerY + this.radius * Math.sin(this.num)
-		this.angle = this.num
+		this.angle = this.num-1.5
 	}
 }
