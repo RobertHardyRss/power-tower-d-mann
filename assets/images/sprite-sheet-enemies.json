@@ -125,6 +125,6 @@
 	"size": {"w":1742,"h":498},
 	"scale": "1",
 	"related_multi_packs": [ "sprite-sheet-misc.json", "sprite-sheet-player.json" ],
-	"smartupdate": "$TexturePacker:SmartUpdate:4f261f9ebd5ef4d136544b645b0cd3d2:dbfa0d86e4efe80f33dc026eab5cffe2:d06cafd6834484422a401f10eb4b1f35$"
+	"smartupdate": "$TexturePacker:SmartUpdate:571983448d115ba0e150cef7c1cfc2c7:8d522d51c78d683d853d002d0432370b:d06cafd6834484422a401f10eb4b1f35$"
 }
 }

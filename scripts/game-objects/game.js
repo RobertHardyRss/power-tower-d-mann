@@ -7,7 +7,7 @@ import { Enemy, EnemyDrone, CircleDrone } from "./enemy.js";
 import { Explosion } from "./explosion.js";
 import { PlayerShip } from "./player-ship.js";
 import { Projectile } from "./projectile.js";
-import { PlayerStatsPanel, TurretUpgradePanel } from "./user-interface.js";
+import { GameOverPanel, PlayerStatsPanel, TurretUpgradePanel } from "./user-interface.js";
 
 export class Game {
 	/**
@@ -28,11 +28,16 @@ export class Game {
 		this.playerShip = new PlayerShip(this.ctx);
 		this.showUpgradeGui = false;
 		this.isGamePaused = false;
+		this.isGameOver = false;
+		this.gameOverPanel = new GameOverPanel(this.ctx);
+
 		/** @type { Explosion[] } */
 		this.explosions = [];
 
 		/** @type { Enemy[] } */
 		this.enemies = [];
+		this.maxEnemies = 20;
+
 		/** @type { Projectile[] } */
 		this.projectiles = [];
 
@@ -112,6 +117,11 @@ export class Game {
 	}
 
 	draw() {
+		if (this.isGameOver) {
+			this.gameOverPanel.draw();
+			return;
+		}
+
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
 		starFieldBackground.draw();
@@ -150,47 +160,61 @@ export class Game {
 		}
 	}
 
+	handlePlayerDeath() {
+		this.isGameOver = true;
+	}
+
+	/**
+	 * @param {WheelEvent} event
+	 */
+	handleScroll(event) {
+		// don't scroll the window (default behavior)
+		event.preventDefault();
+
+		// change the scaling factor based on whether we are zooming in or out
+		const direction = event.deltaY > 0 ? 1 : -1;
+		this.scale += 0.1 * direction;
+		this.scale = Math.min(Math.max(0.5, this.scale), 2);
+		//console.log("scale", this.scale, e.deltaY);
+	}
+
+	handleResize() {
+		// when the window is resized make sure we set our
+		// canvas width and height to the new window size
+		this.canvas.width = window.innerWidth;
+		this.canvas.height = window.innerHeight;
+	}
+
+	/**
+	 * @param {KeyboardEvent} event
+	 */
+	handleKeydown(event) {
+		switch (event.code) {
+			case "Space":
+				// toggle the upgrade GUI when space bar is pressed
+				this.showUpgradeGui = !this.showUpgradeGui;
+				// throw an event so other objects can sync up
+				document.dispatchEvent(
+					new CustomEvent(EVENTS.toggleUpgradeUi, {
+						detail: new ToggleUpgradeUiEvent(this.showUpgradeGui),
+					})
+				);
+				//console.log(e.code, "showUpgradeGui", this.showUpgradeGui);
+				break;
+			case "Escape":
+				// toggle paused game when escape key is pressed
+				this.isGamePaused = !this.isGamePaused;
+				//console.log(e.code, "isGamePaused", this.isGamePaused);
+				break;
+		}
+	}
+
 	wireUpEventListeners() {
-		this.canvas.addEventListener("wheel", (e) => {
-			// don't scroll the window (default behavior)
-			e.preventDefault();
-
-			// change the scaling factor based on whether we are zooming in or out
-			const direction = e.deltaY > 0 ? 1 : -1;
-			this.scale += 0.1 * direction;
-			this.scale = Math.min(Math.max(0.5, this.scale), 2);
-			//console.log("scale", this.scale, e.deltaY);
-		});
-
-		window.addEventListener("resize", (e) => {
-			// when the window is resized make sure we set our
-			// canvas width and height to the new window size
-			this.canvas.width = window.innerWidth;
-			this.canvas.height = window.innerHeight;
-		});
-
-		window.addEventListener("keydown", (e) => {
-			switch (e.code) {
-				case "Space":
-					// toggle the upgrade GUI when space bar is pressed
-					this.showUpgradeGui = !this.showUpgradeGui;
-					// throw an event so other objects can sync up
-					document.dispatchEvent(
-						new CustomEvent(EVENTS.toggleUpgradeUi, {
-							detail: new ToggleUpgradeUiEvent(this.showUpgradeGui),
-						})
-					);
-					console.log(e.code, "showUpgradeGui", this.showUpgradeGui);
-					break;
-				case "Escape":
-					// toggle paused game when escape key is pressed
-					this.isGamePaused = !this.isGamePaused;
-					console.log(e.code, "isGamePaused", this.isGamePaused);
-					break;
-			}
-		});
-
+		this.canvas.addEventListener("wheel", this.handleScroll.bind(this));
+		window.addEventListener("resize", this.handleResize.bind(this));
+		window.addEventListener("keydown", this.handleKeydown.bind(this));
 		document.addEventListener(EVENTS.playerHealthChange, this.handleHealthChange.bind(this));
+		document.addEventListener(EVENTS.playerDeath, this.handlePlayerDeath.bind(this));
 	}
 
 	/**
@@ -205,11 +229,12 @@ export class Game {
 
 		if (increaseDifficulty) {
 			this.difficultyLevel++;
+			document.dispatchEvent(new Event(EVENTS.difficultyIncrease));
 			this.timers.difficultyLevelTimer = 0;
 			this.timers.enemySpawnInterval = Math.max(100, this.timers.enemySpawnInterval - 100);
 		}
 
-		if (!spawnEnemy) return;
+		if (!spawnEnemy || this.enemies.length > this.maxEnemies) return;
 
 		this.timers.lastEnemySpawnTimer = 0;
 		this.enemies.push(this.getRandomEnemy());

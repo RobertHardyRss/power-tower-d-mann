@@ -14,20 +14,8 @@ export class PlayerShip {
 		this.turrets = [
 			new PointDefenseTurret(ctx, 75, -50, "Front Port", Math.PI / 2),
 			new PointDefenseTurret(ctx, -75, -50, "Stern Port", Math.PI / 2),
-			new PointDefenseTurret(
-				ctx,
-				75,
-				50,
-				"Front Starboard",
-				Math.PI * 1.5
-			),
-			new PointDefenseTurret(
-				ctx,
-				-75,
-				50,
-				"Stern Starboard",
-				Math.PI * 1.5
-			),
+			new PointDefenseTurret(ctx, 75, 50, "Front Starboard", Math.PI * 1.5),
+			new PointDefenseTurret(ctx, -75, 50, "Stern Starboard", Math.PI * 1.5),
 			new MainTurret(ctx, 75, 0, "Main Front", Math.PI),
 			new MainTurretAlt(ctx, -75, 0, "Main Stern", 0),
 		];
@@ -37,14 +25,24 @@ export class PlayerShip {
 		this.height = 131;
 		this.image = playerSpriteSheet.image;
 		this.shipSpriteFrame = sprites.getFrame("main-ship");
-		this.image2 = miscSprite.image
-		this.mSprites = miscSprite
-		this.timagnum1 = 1
-		this.timagnum2 = 3
-		this.thrusterSprite1 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum1)+".png");
-		this.thrusterSprite2 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum2)+".png");
-		this.time1 = 5
-		this.time2 = 4
+
+		this.animationImage = miscSprite.image;
+		this.animationSpriteData = miscSprite;
+		this.frameRate = 1000 / 12; // 12 fps
+		this.frameTime = 0;
+		this.exhaustSprites = this.animationSpriteData.getFrames("blue/");
+		this.exhaustFrameEng1 = 0;
+		this.exhaustFrameEng2 = Math.floor(this.exhaustSprites.length / 2);
+		this.exhaustFrameCount = this.exhaustSprites.length;
+
+		// this.image2 = miscSprite.image
+		// this.mSprites = miscSprite
+		// this.timagnum1 = 1
+		// this.timagnum2 = 3
+		// this.thrusterSprite1 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum1)+".png");
+		// this.thrusterSprite2 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum2)+".png");
+		// this.time1 = 5
+		// this.time2 = 4
 	}
 
 	getShipPath() {
@@ -88,39 +86,50 @@ export class PlayerShip {
 		this.turrets.forEach((t) => {
 			t.update(elapsedTime);
 		});
-		this.time1 --
-		this.time2 --
-		if(this.time1 < 0) {
-			if (this.timagnum1 > 1){
-				this.timagnum1 --
-				this.thrusterSprite1 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum1)+".png");
+
+		this.frameTime += elapsedTime;
+
+		if (this.frameTime >= this.frameRate) {
+			this.frameTime = 0;
+			this.exhaustFrameEng1++;
+			this.exhaustFrameEng2++;
+			if (this.exhaustFrameEng1 === this.exhaustFrameCount) {
+				this.exhaustFrameEng1 = 0;
 			}
-			else{
-				this.timagnum1 = 4
-				this.thrusterSprite1 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum1)+".png");
+			if (this.exhaustFrameEng2 === this.exhaustFrameCount) {
+				this.exhaustFrameEng2 = 0;
 			}
-			this.time1 = 5
-		}
-		if(this.time2 < 0) {
-			if (this.timagnum2 >1){
-				this.timagnum2 --
-				this.thrusterSprite2 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum2)+".png");
-			}
-			else{
-				this.timagnum2 = 4
-				this.thrusterSprite2 =  this.mSprites.getFrame("blue/frame-0"+ String(this.timagnum2)+".png");
-			}
-			this.time2 = 5
 		}
 	}
 
 	draw() {
-		// this.ctx.save();
-		// this.ctx.fillStyle = "silver";
-		// this.ctx.strokeStyle = "black";
-		// this.ctx.fill(this.shipPath);
-		// this.ctx.stroke(this.shipPath);
-		// this.ctx.restore();
+		this.ctx.save();
+
+		this.ctx.rotate(Math.PI);
+		this.ctx.drawImage(
+			this.animationImage,
+			this.exhaustSprites[this.exhaustFrameEng1].frame.x, // sx
+			this.exhaustSprites[this.exhaustFrameEng1].frame.y, // sy
+			this.exhaustSprites[this.exhaustFrameEng1].frame.w, // sw
+			this.exhaustSprites[this.exhaustFrameEng1].frame.h, // sh
+			this.width * this.exhaustSprites[this.exhaustFrameEng1].pivot.x + 55, // dx
+			-(this.height / 2) * this.exhaustSprites[this.exhaustFrameEng1].pivot.y + 20, // dy
+			this.width * 0.33, // dw
+			this.height * 0.33 // dh
+		);
+
+		this.ctx.drawImage(
+			this.animationImage,
+			this.exhaustSprites[this.exhaustFrameEng2].frame.x, // sx
+			this.exhaustSprites[this.exhaustFrameEng2].frame.y, // sy
+			this.exhaustSprites[this.exhaustFrameEng2].frame.w, // sw
+			this.exhaustSprites[this.exhaustFrameEng2].frame.h, // sh
+			this.width * this.exhaustSprites[this.exhaustFrameEng2].pivot.x + 55, // dx
+			-(this.height / 2) * this.exhaustSprites[this.exhaustFrameEng2].pivot.y + 3, // dy
+			this.width * 0.33, // dw
+			this.height * 0.33 // dh
+		);
+		this.ctx.restore();
 
 		this.ctx.save();
 		this.ctx.drawImage(
@@ -134,33 +143,33 @@ export class PlayerShip {
 			this.width, // placement width
 			this.height // placement height
 		);
+		// this.ctx.restore();
+		// this.ctx.save()
+		// this.ctx.drawImage(
+		// 	this.image2,
+		// 	this.thrusterSprite1.frame.x,
+		// 	this.thrusterSprite1.frame.y,
+		// 	this.thrusterSprite1.frame.w,
+		// 	this.thrusterSprite1.frame.h,
+		// 	-210,
+		// 	-34,
+		// 	75,
+		// 	50,
+		// )
+		// this.ctx.restore()
+		// this.ctx.save()
+		// this.ctx.drawImage(
+		// 	this.image2,
+		// 	this.thrusterSprite2.frame.x,
+		// 	this.thrusterSprite2.frame.y,
+		// 	this.thrusterSprite2.frame.w,
+		// 	this.thrusterSprite2.frame.h,
+		// 	-210,
+		// 	-17,
+		// 	75,
+		// 	50,
+		// )
 		this.ctx.restore();
-		this.ctx.save()
-		this.ctx.drawImage(
-			this.image2,
-			this.thrusterSprite1.frame.x,
-			this.thrusterSprite1.frame.y,
-			this.thrusterSprite1.frame.w,
-			this.thrusterSprite1.frame.h,
-			-210,
-			-34,
-			75,
-			50,
-		)
-		this.ctx.restore()
-		this.ctx.save()
-		this.ctx.drawImage(
-			this.image2,
-			this.thrusterSprite2.frame.x,
-			this.thrusterSprite2.frame.y,
-			this.thrusterSprite2.frame.w,
-			this.thrusterSprite2.frame.h,
-			-210,
-			-17,
-			75,
-			50,
-		)
-		this.ctx.restore()
 
 		this.turrets.forEach((t) => {
 			t.draw();
