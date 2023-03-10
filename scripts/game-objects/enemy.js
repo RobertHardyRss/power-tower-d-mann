@@ -18,6 +18,9 @@ export class Enemy {
 		this.x = x;
 		this.y = y;
 
+		this.turretTargetX = x;
+		this.turretTargetY = y;
+
 		this.angle = Math.atan2(this.y, this.x);
 		this.xOffset = Math.cos(this.angle);
 		this.yOffset = Math.sin(this.angle);
@@ -194,6 +197,9 @@ export class EnemyDrone extends Enemy {
 
 		this.x -= this.xOffset * this.speed;
 		this.y -= this.yOffset * this.speed;
+
+		this.turretTargetX = this.x - this.xOffset * (this.width / 2);
+		this.turretTargetY = this.y - this.yOffset * (this.height / 2);
 	}
 }
 
@@ -243,6 +249,10 @@ export class CircleDrone extends Enemy {
 		this.radius -= this.speed / 2;
 		this.x = this.centerX + this.radius * Math.cos(this.num);
 		this.y = this.centerY + this.radius * Math.sin(this.num);
+
+		this.turretTargetX = this.x - this.xOffset * (this.width / 2);
+		this.turretTargetY = this.y - this.yOffset * (this.height / 2);
+
 		this.angle = this.num - 1.4;
 	}
 }

@@ -217,8 +217,8 @@ export class Turret {
 			this.projectiles.push(new Projectile(this.ctx, this.x, this.y, this.range, this.angle));
 		}
 
-		let dx = this.x - this.target.x;
-		let dy = this.y - this.target.y;
+		let dx = this.x - this.target.turretTargetX;
+		let dy = this.y - this.target.turretTargetY;
 		this.targetAngle = Math.atan2(dy, dx);
 
 		let rotationDirectionMultiplier = this.getRotationDirection();
@@ -228,6 +228,7 @@ export class Turret {
 		} else if (this.angle < -Math.PI) {
 			this.angle = Math.PI - (-this.angle - Math.PI);
 		}
+
 
 		this.angle = Math.min(Math.max(this.angle, -Math.PI), Math.PI);
 	}
